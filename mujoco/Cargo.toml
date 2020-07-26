@@ -1,6 +1,6 @@
 [package]
 name = "mujoco"
-version = "0.0.0"
+version = "0.0.1"
 authors = ["Ryan Butler <thebutlah@gmail.com>"]
 edition = "2018"
 description = "MuJoCo bindings for Rust"
@@ -15,4 +15,4 @@ categories = ["api-bindings", "science::robotics", "simulation"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-mujoco-sys = { version = "0.1.0", path = "../mujoco-sys" }
+mujoco-sys = { version = "0.1.1", path = "../mujoco-sys" }
