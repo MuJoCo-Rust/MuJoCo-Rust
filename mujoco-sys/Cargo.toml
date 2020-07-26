@@ -1,0 +1,19 @@
+[package]
+name = "mujoco-sys"
+version = "0.1.0"
+authors = ["Ryan Butler <thebutlah@gmail.com>"]
+edition = "2018"
+description = "FFI bindings to MuJoCo"
+readme = "../README.md"
+repository = "https://github.com/TheButlah/mujoco-rs/"
+homepage = "https://github.com/TheButlah/mujoco-rs/"
+license = "MIT"
+keywords = ["ffi", "bindgen", "bindings", "mujoco"]
+categories = ["external-ffi-bindings", "science::robotics", "simulation"]
+links = "mujoco200"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+bindgen = "0.54.1"
+dirs = "3.0"

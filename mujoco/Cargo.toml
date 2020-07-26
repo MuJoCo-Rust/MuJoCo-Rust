@@ -1,0 +1,18 @@
+[package]
+name = "mujoco"
+version = "0.0.0"
+authors = ["Ryan Butler <thebutlah@gmail.com>"]
+edition = "2018"
+description = "MuJoCo bindings for Rust"
+readme = "../README.md"
+repository = "https://github.com/TheButlah/mujoco-rs/"
+homepage = "https://github.com/TheButlah/mujoco-rs/"
+license = "MIT"
+keywords = ["mujoco", "rl", "ml", "physics", "robotics"]
+categories = ["api-bindings", "science::robotics", "simulation"]
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+mujoco-sys = { version = "0.1.0", path = "../mujoco-sys" }
