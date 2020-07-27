@@ -1,6 +1,6 @@
 [package]
 name = "mujoco-sys"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Ryan Butler <thebutlah@gmail.com>"]
 edition = "2018"
 description = "FFI bindings to MuJoCo"
@@ -12,8 +12,17 @@ keywords = ["ffi", "bindgen", "bindings", "mujoco"]
 categories = ["external-ffi-bindings", "science::robotics", "simulation"]
 links = "mujoco200"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+default = ["mj-render"]
+
+# If activated, will require MuJoCo's OpenGL dependencies to be installed, and
+# enabes the `mjr_*` functions.
+mj-render = []
 
 [build-dependencies]
 bindgen = "0.54.1"
 dirs = "3.0"
+
+[dev-dependencies]
+dirs = "3.0"
+lazy_static = "1.4.0"

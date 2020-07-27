@@ -1,13 +1,7 @@
-#![allow(non_upper_case_globals)]
-#![allow(non_camel_case_types)]
-#![allow(non_snake_case)]
+pub mod no_render;
+pub use no_render::*;
 
-include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
+#[cfg(feature = "mj-render")]
+pub mod render;
+#[cfg(feature = "mj-render")]
+pub use render::*;
