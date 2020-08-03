@@ -11,6 +11,7 @@ fn main() {
             .join("mujoco200");
         let mj_bin = mj_path.join("bin");
 
+        // Compile-time link location
         println!("cargo:rustc-link-search={}", mj_bin.to_str().unwrap());
         if cfg!(feature = "mj-render") {
             println!("cargo:rustc-link-lib=dylib=mujoco200");
