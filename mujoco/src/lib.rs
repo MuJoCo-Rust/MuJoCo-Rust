@@ -39,6 +39,7 @@ const_assert_eq!(std::mem::size_of::<Empty>(), 0);
 
 /// Lexically scoped activation context. [`Self::new()`] activates MuJoCo, and
 /// when the context is dropped, MuJoCo is deactivated
+#[must_use = "if unused MuJoCo will immediately deactivate as the context is dropped"]
 pub struct ActivationContext(Empty);
 impl ActivationContext {
     /// Creates a new `ActivationContext`. Equivalent to calling [`activate()`]

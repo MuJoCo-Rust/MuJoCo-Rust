@@ -1,6 +1,7 @@
 use std::ffi::CString;
 
 /// A MuJoCo model
+#[derive(Debug)]
 pub struct Model {
     ptr: *mut mujoco_sys::no_render::mjModel,
 }
@@ -19,28 +20,33 @@ impl Model {
             CString::new(path.to_str().expect("Could not convert `path` to unicode!"))
                 .expect("`path` had an unexpected null byte in its interior!");
 
-        const ERR_STR_CAPACITY: usize = 1000;
-        let err_str = CString::new(Vec::with_capacity(ERR_STR_CAPACITY))
-            .unwrap()
-            .into_raw();
+        let mut err_buf = Vec::new();
+        // TODO: Would it be safe to just allocate w/o init?
+        err_buf.resize(1000, b'\0'); // Allocate and initialize 1000 null bytes
 
         let model_ptr = unsafe {
             mujoco_sys::no_render::mj_loadXML(
                 filepath.as_ptr(),
                 std::ptr::null(),
-                err_str,
-                ERR_STR_CAPACITY as std::os::raw::c_int,
+                err_buf.as_mut_ptr() as *mut std::os::raw::c_char,
+                err_buf.len() as std::os::raw::c_int,
             )
         };
 
-        // TODO: Investigate what happens if the string buffer is totally filled up.
-        // Will the buffer still be null terminated? If not, this can cause a
-        // segfault.
-        let err_str = unsafe { CString::from_raw(err_str) };
-        let err_str = err_str.into_string().expect(
-            "Encountered an error from `mj_loadXML()` that was not valid UTF-8!",
-        );
-        debug_assert_eq!(err_str.capacity(), ERR_STR_CAPACITY);
+        let err_str = CString::new(err_buf).unwrap_or_else(|e| {
+            let nul_pos = e.nul_position();
+            let mut err_buf = e.into_vec();
+            debug_assert!(nul_pos < err_buf.len());
+            // Shrinks to all chars up to but not including nul byte
+            err_buf.resize_with(nul_pos, Default::default);
+            debug_assert_eq!(nul_pos, err_buf.len());
+            debug_assert!(!err_buf.contains(&b'\0'));
+            // This is unsafe for performance reasons, but could be switched back to a
+            // safe alternative
+            // Will shrink vec to fit. Not ideal.
+            unsafe { CString::from_vec_unchecked(err_buf) }
+        });
+        let err_str = err_str.into_string().expect("`CString` was not UTF-8!");
 
         if !err_str.is_empty() {
             return Err(err_str);
@@ -48,7 +54,7 @@ impl Model {
         if model_ptr == std::ptr::null_mut() {
             unreachable!(
                 "It shouldn't be possible to get a null pointer from mujoco \
-                    without an error message!"
+                without an error message!"
             );
         }
         Ok(Model { ptr: model_ptr })
@@ -57,5 +63,38 @@ impl Model {
 impl Drop for Model {
     fn drop(&mut self) {
         unsafe { mujoco_sys::no_render::mj_deleteModel(self.ptr) };
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use lazy_static::lazy_static;
+    lazy_static! {
+        static ref PKG_ROOT: std::path::PathBuf =
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                .canonicalize()
+                .expect("Could not resolve absolute path for package root!");
+        static ref SIMPLE_XML_PATH: std::path::PathBuf =
+            PKG_ROOT.join("tests").join("res").join("simple.xml");
+    }
+
+    #[test]
+    fn should_work() {
+        assert!(true)
+    }
+
+    #[test]
+    fn from_xml_without_activation() {
+        use super::Model;
+
+        // Check to be sure that loading fails when not activated
+        let failed_result = Model::from_xml(&*SIMPLE_XML_PATH);
+        assert!(failed_result
+            .unwrap_err()
+            .starts_with("Error: engine error: Missing or invalid license activation"));
+
+        let _guard = crate::activate();
+
+        Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
     }
 }
