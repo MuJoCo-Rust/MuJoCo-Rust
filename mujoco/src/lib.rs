@@ -1,6 +1,8 @@
 //! Provides safe bindings to [MuJoCo](http://www.mujoco.org/index.html), a physics
 //! simulator commonly used for robotics and machine learning.
 
+pub mod model;
+
 use lazy_static::lazy_static;
 use static_assertions::const_assert_eq;
 use std::ffi::{CStr, CString};
