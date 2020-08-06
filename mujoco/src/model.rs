@@ -84,14 +84,8 @@ mod tests {
     }
 
     #[test]
-    fn from_xml_without_activation() {
+    fn from_xml() {
         use super::Model;
-
-        // Check to be sure that loading fails when not activated
-        let failed_result = Model::from_xml(&*SIMPLE_XML_PATH);
-        assert!(failed_result
-            .unwrap_err()
-            .starts_with("Error: engine error: Missing or invalid license activation"));
 
         let _guard = crate::activate();
 

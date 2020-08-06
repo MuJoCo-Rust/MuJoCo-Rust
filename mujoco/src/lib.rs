@@ -4,7 +4,6 @@
 pub mod model;
 
 use lazy_static::lazy_static;
-use static_assertions::const_assert_eq;
 use std::ffi::{CStr, CString};
 
 lazy_static! {
@@ -22,65 +21,54 @@ lazy_static! {
     };
 }
 
-/// Activates the MuJoCo key. Returns an [`ActivationContext`], which when
-/// dropped deactivates MuJoCo. Equivalent to calling
-/// [`ActivationContext::new()`] with [`KEY_LOC`]
+/// Activates MuJoCo using the default key [`KEY_LOC`].
 ///
 /// [`KEY_LOC`]: struct.KEY_LOC.html
-pub fn activate() -> ActivationContext {
-    let s: &str = &KEY_LOC; // Why is this needed?
-    ActivationContext::new(s)
+pub fn activate() {
+    let s: &str = &KEY_LOC;
+    activate_from_str(s)
 }
 
-// Helper type to represent empty data
-#[derive(Default)]
-struct Empty {}
-const_assert_eq!(std::mem::size_of::<Empty>(), 0);
+/// Deactivates MuJoCo. Note that this globally deactivates MuJoCo, so make sure
+/// sure that other code doesn't expect it to be activated when this is called
+pub fn deactivate() {
+    unsafe { mujoco_sys::mj_deactivate() }
+}
 
-/// Lexically scoped activation context. [`Self::new()`] activates MuJoCo, and
-/// when the context is dropped, MuJoCo is deactivated
-#[must_use = "if unused MuJoCo will immediately deactivate as the context is dropped"]
-pub struct ActivationContext(Empty);
-impl ActivationContext {
-    /// Creates a new `ActivationContext`. Equivalent to calling [`activate()`]
-    ///
-    /// # Panics
-    /// Panics if there is an error getting the mujoco key
-    pub fn new(key_loc: impl AsRef<str>) -> Self {
-        let key_loc = CString::new(key_loc.as_ref()).unwrap();
-        Self::new_from_cstr(key_loc)
+/// Creates a new `ActivationContext`. Equivalent to calling [`activate()`]
+///
+/// # Panics
+/// Panics if there is an error getting the mujoco key
+pub fn activate_from_str(key_loc: impl AsRef<str>) {
+    let key_loc = CString::new(key_loc.as_ref()).unwrap();
+    activate_from_cstr(key_loc)
+}
+
+/// Creates a new `ActivationContext` from a c-style string
+///
+/// # Panics
+/// Panics if there is an error getting the mujoco key
+pub fn activate_from_cstr(key_loc: impl AsRef<CStr>) {
+    let key_loc = key_loc.as_ref();
+    let activate_result;
+    unsafe {
+        activate_result = mujoco_sys::mj_activate(key_loc.as_ptr());
     }
-
-    /// Creates a new `ActivationContext` from a c-style string
-    ///
-    /// # Panics
-    /// Panics if there is an error getting the mujoco key
-    pub fn new_from_cstr(key_loc: impl AsRef<CStr>) -> Self {
-        let key_loc = key_loc.as_ref();
-        let activate_result;
-        unsafe {
-            activate_result = mujoco_sys::mj_activate(key_loc.as_ptr());
-        }
-        if activate_result != 1 {
-            unreachable!(
-                "If activation fails, mujoco calls error handler and terminates."
-            )
-        }
-        Self(Empty {})
+    if activate_result != 1 {
+        unreachable!("If activation fails, mujoco calls error handler and terminates.")
     }
 }
-impl Drop for ActivationContext {
-    fn drop(&mut self) {
-        unsafe { mujoco_sys::mj_deactivate() }
-    }
-}
-const_assert_eq!(std::mem::size_of::<ActivationContext>(), 0);
 
 #[cfg(test)]
 mod tests {
 
+    use std::ffi::CString;
     #[test]
     fn activate() {
+        let s: &str = &super::KEY_LOC;
+
         super::activate();
+        super::activate_from_str(s);
+        super::activate_from_cstr(CString::new(s).unwrap());
     }
 }
