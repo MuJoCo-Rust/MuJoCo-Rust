@@ -59,16 +59,44 @@ impl Model {
         }
         Ok(Model { ptr: model_ptr })
     }
+
+    /// Serializes the `Model` into a binary vector
+    pub fn to_vec(&self) -> Vec<u8> {
+        let nbytes = unsafe { mujoco_sys::no_render::mj_sizeModel(self.ptr) };
+        let mut buf: Vec<u8> = Vec::with_capacity(nbytes as usize);
+        unsafe {
+            mujoco_sys::no_render::mj_saveModel(
+                self.ptr,
+                std::ptr::null(),
+                buf.as_mut_ptr() as *mut std::os::raw::c_void,
+                nbytes,
+            );
+            buf.set_len(nbytes as usize);
+        };
+        buf
+    }
 }
 impl Drop for Model {
     fn drop(&mut self) {
         unsafe { mujoco_sys::no_render::mj_deleteModel(self.ptr) };
     }
 }
+impl Clone for Model {
+    fn clone(&self) -> Self {
+        let ptr = unsafe {
+            mujoco_sys::no_render::mj_copyModel(std::ptr::null_mut(), self.ptr)
+        };
+        Self { ptr }
+    }
+}
 
 #[cfg(test)]
 mod tests {
+    use super::Model;
+    use crate::activate;
+
     use lazy_static::lazy_static;
+
     lazy_static! {
         static ref PKG_ROOT: std::path::PathBuf =
             std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -85,10 +113,18 @@ mod tests {
 
     #[test]
     fn from_xml() {
-        use super::Model;
-
-        crate::activate();
-
+        activate();
         Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
+    }
+
+    #[test]
+    fn serialize() {
+        activate();
+        let m = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
+        let serialized = m.to_vec();
+        assert_eq!(serialized.len(), unsafe {
+            mujoco_sys::no_render::mj_sizeModel(m.ptr)
+        } as usize);
+        println!("Serialized data: {:?}", serialized);
     }
 }
