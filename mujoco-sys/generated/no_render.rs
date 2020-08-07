@@ -675,7 +675,7 @@ impl _mjtLRMode {
 pub struct _mjtLRMode(pub u32);
 pub use self::_mjtLRMode as mjtLRMode;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjLROpt {
     pub mode: ::std::os::raw::c_int,
     pub useexisting: ::std::os::raw::c_int,
@@ -865,9 +865,14 @@ fn bindgen_test_layout__mjVFS() {
         )
     );
 }
+impl Default for _mjVFS {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
 pub type mjVFS = _mjVFS;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjOption {
     pub timestep: mjtNum,
     pub apirate: mjtNum,
@@ -1165,7 +1170,7 @@ fn bindgen_test_layout__mjOption() {
 }
 pub type mjOption = _mjOption;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjVisual {
     pub global: _mjVisual__bindgen_ty_1,
     pub quality: _mjVisual__bindgen_ty_2,
@@ -1175,7 +1180,7 @@ pub struct _mjVisual {
     pub rgba: _mjVisual__bindgen_ty_6,
 }
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjVisual__bindgen_ty_1 {
     pub fovy: f32,
     pub ipd: f32,
@@ -1275,7 +1280,7 @@ fn bindgen_test_layout__mjVisual__bindgen_ty_1() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjVisual__bindgen_ty_2 {
     pub shadowsize: ::std::os::raw::c_int,
     pub offsamples: ::std::os::raw::c_int,
@@ -1362,7 +1367,7 @@ fn bindgen_test_layout__mjVisual__bindgen_ty_2() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjVisual__bindgen_ty_3 {
     pub ambient: [f32; 3usize],
     pub diffuse: [f32; 3usize],
@@ -1435,7 +1440,7 @@ fn bindgen_test_layout__mjVisual__bindgen_ty_3() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjVisual__bindgen_ty_4 {
     pub stiffness: f32,
     pub stiffnessrot: f32,
@@ -1634,7 +1639,7 @@ fn bindgen_test_layout__mjVisual__bindgen_ty_4() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjVisual__bindgen_ty_5 {
     pub forcewidth: f32,
     pub contactwidth: f32,
@@ -1874,7 +1879,7 @@ fn bindgen_test_layout__mjVisual__bindgen_ty_5() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjVisual__bindgen_ty_6 {
     pub fog: [f32; 4usize],
     pub haze: [f32; 4usize],
@@ -2271,7 +2276,7 @@ fn bindgen_test_layout__mjVisual() {
 }
 pub type mjVisual = _mjVisual;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjStatistic {
     pub meaninertia: mjtNum,
     pub meanmass: mjtNum,
@@ -6297,6 +6302,11 @@ fn bindgen_test_layout__mjModel() {
         )
     );
 }
+impl Default for _mjModel {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
 pub type mjModel = _mjModel;
 impl _mjtWarning {
     pub const mjWARN_INERTIA: _mjtWarning = _mjtWarning(0);
@@ -6550,9 +6560,14 @@ fn bindgen_test_layout__mjContact() {
         )
     );
 }
+impl Default for _mjContact {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
 pub type mjContact = _mjContact;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjWarningStat {
     pub lastinfo: ::std::os::raw::c_int,
     pub number: ::std::os::raw::c_int,
@@ -6596,7 +6611,7 @@ fn bindgen_test_layout__mjWarningStat() {
 }
 pub type mjWarningStat = _mjWarningStat;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjTimerStat {
     pub duration: mjtNum,
     pub number: ::std::os::raw::c_int,
@@ -6638,7 +6653,7 @@ fn bindgen_test_layout__mjTimerStat() {
 }
 pub type mjTimerStat = _mjTimerStat;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjSolverStat {
     pub improvement: mjtNum,
     pub gradient: mjtNum,
@@ -8070,6 +8085,11 @@ fn bindgen_test_layout__mjData() {
         )
     );
 }
+impl Default for _mjData {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
 pub type mjData = _mjData;
 pub type mjfGeneric =
     ::std::option::Option<unsafe extern "C" fn(m: *const mjModel, d: *mut mjData)>;
@@ -8371,7 +8391,7 @@ impl _mjtStereo {
 pub struct _mjtStereo(pub u32);
 pub use self::_mjtStereo as mjtStereo;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjvPerturb {
     pub select: ::std::os::raw::c_int,
     pub skinselect: ::std::os::raw::c_int,
@@ -8470,7 +8490,7 @@ fn bindgen_test_layout__mjvPerturb() {
 }
 pub type mjvPerturb = _mjvPerturb;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjvCamera {
     pub type_: ::std::os::raw::c_int,
     pub fixedcamid: ::std::os::raw::c_int,
@@ -8571,7 +8591,7 @@ fn bindgen_test_layout__mjvCamera() {
 }
 pub type mjvCamera = _mjvCamera;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjvGLCamera {
     pub pos: [f32; 3usize],
     pub forward: [f32; 3usize],
@@ -8953,9 +8973,14 @@ fn bindgen_test_layout__mjvGeom() {
         )
     );
 }
+impl Default for _mjvGeom {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
 pub type mjvGeom = _mjvGeom;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjvLight {
     pub pos: [f32; 3usize],
     pub dir: [f32; 3usize],
@@ -9100,7 +9125,7 @@ fn bindgen_test_layout__mjvLight() {
 }
 pub type mjvLight = _mjvLight;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjvOption {
     pub label: ::std::os::raw::c_int,
     pub frame: ::std::os::raw::c_int,
@@ -9450,6 +9475,11 @@ fn bindgen_test_layout__mjvScene() {
             stringify!(flags)
         )
     );
+}
+impl Default for _mjvScene {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
 }
 pub type mjvScene = _mjvScene;
 #[repr(C)]
@@ -9844,6 +9874,11 @@ fn bindgen_test_layout__mjvFigure() {
         )
     );
 }
+impl Default for _mjvFigure {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
 pub type mjvFigure = _mjvFigure;
 impl _mjtGridPos {
     pub const mjGRID_TOPLEFT: _mjtGridPos = _mjtGridPos(0);
@@ -9907,7 +9942,7 @@ impl _mjtFont {
 pub struct _mjtFont(pub u32);
 pub use self::_mjtFont as mjtFont;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjrRect {
     pub left: ::std::os::raw::c_int,
     pub bottom: ::std::os::raw::c_int,
@@ -10703,6 +10738,11 @@ fn bindgen_test_layout__mjrContext() {
         )
     );
 }
+impl Default for _mjrContext {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
 pub type mjrContext = _mjrContext;
 impl _mjtButton {
     pub const mjBUTTON_NONE: _mjtButton = _mjtButton(0);
@@ -11089,9 +11129,14 @@ fn bindgen_test_layout__mjuiState() {
         )
     );
 }
+impl Default for _mjuiState {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
 pub type mjuiState = _mjuiState;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjuiThemeSpacing {
     pub total: ::std::os::raw::c_int,
     pub scroll: ::std::os::raw::c_int,
@@ -11253,7 +11298,7 @@ fn bindgen_test_layout__mjuiThemeSpacing() {
 }
 pub type mjuiThemeSpacing = _mjuiThemeSpacing;
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjuiThemeColor {
     pub master: [f32; 3usize],
     pub thumb: [f32; 3usize],
@@ -11568,7 +11613,7 @@ pub union _mjuiItem__bindgen_ty_1 {
     _bindgen_union_align: [u64; 101usize],
 }
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjuiItem__bindgen_ty_1__bindgen_ty_1 {
     pub modifier: ::std::os::raw::c_int,
     pub shortcut: ::std::os::raw::c_int,
@@ -11669,8 +11714,13 @@ fn bindgen_test_layout__mjuiItem__bindgen_ty_1__bindgen_ty_2() {
         )
     );
 }
+impl Default for _mjuiItem__bindgen_ty_1__bindgen_ty_2 {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjuiItem__bindgen_ty_1__bindgen_ty_3 {
     pub range: [f64; 2usize],
     pub divisions: f64,
@@ -11721,7 +11771,7 @@ fn bindgen_test_layout__mjuiItem__bindgen_ty_1__bindgen_ty_3() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjuiItem__bindgen_ty_1__bindgen_ty_4 {
     pub nelem: ::std::os::raw::c_int,
     pub range: [[f64; 2usize]; 5usize],
@@ -11836,6 +11886,11 @@ fn bindgen_test_layout__mjuiItem__bindgen_ty_1() {
         )
     );
 }
+impl Default for _mjuiItem__bindgen_ty_1 {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
 #[test]
 fn bindgen_test_layout__mjuiItem() {
     assert_eq!(
@@ -11918,6 +11973,11 @@ fn bindgen_test_layout__mjuiItem() {
             stringify!(rect)
         )
     );
+}
+impl Default for _mjuiItem {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
 }
 pub type mjuiItem = _mjuiItem;
 #[repr(C)]
@@ -12030,6 +12090,11 @@ fn bindgen_test_layout__mjuiSection() {
             stringify!(rcontent)
         )
     );
+}
+impl Default for _mjuiSection {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
 }
 pub type mjuiSection = _mjuiSection;
 #[repr(C)]
@@ -12291,6 +12356,11 @@ fn bindgen_test_layout__mjUI() {
         )
     );
 }
+impl Default for _mjUI {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
+}
 pub type mjUI = _mjUI;
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -12363,6 +12433,11 @@ fn bindgen_test_layout__mjuiDef() {
             stringify!(other)
         )
     );
+}
+impl Default for _mjuiDef {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
 }
 pub type mjuiDef = _mjuiDef;
 extern "C" {

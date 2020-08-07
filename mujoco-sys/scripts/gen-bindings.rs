@@ -29,6 +29,7 @@ fn main() {
             .whitelist_var(whitelist)
             .default_enum_style(EnumVariation::NewType { is_bitfield: false })
             .size_t_is_usize(true)
+            .derive_default(true)
             .clang_arg("-I".to_owned() + mj_include.to_str().unwrap())
     };
 

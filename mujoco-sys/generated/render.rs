@@ -3,7 +3,7 @@
 pub use crate::no_render::*;
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Default, Copy, Clone)]
 pub struct _mjrRect {
     pub left: ::std::os::raw::c_int,
     pub bottom: ::std::os::raw::c_int,
@@ -798,6 +798,11 @@ fn bindgen_test_layout__mjrContext() {
             stringify!(currentBuffer)
         )
     );
+}
+impl Default for _mjrContext {
+    fn default() -> Self {
+        unsafe { ::std::mem::zeroed() }
+    }
 }
 pub type mjrContext = _mjrContext;
 extern "C" {
