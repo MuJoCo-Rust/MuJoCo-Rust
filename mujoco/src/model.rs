@@ -127,4 +127,12 @@ mod tests {
         } as usize);
         println!("Serialized data: {:?}", serialized);
     }
+
+    #[test]
+    fn clone() {
+        activate();
+        let m_original = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
+        let m_cloned = m_original.clone();
+        assert_eq!(m_original.to_vec(), m_cloned.to_vec());
+    }
 }
