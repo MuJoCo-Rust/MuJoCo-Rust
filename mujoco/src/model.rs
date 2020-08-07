@@ -87,7 +87,7 @@ mod tests {
     fn from_xml() {
         use super::Model;
 
-        let _guard = crate::activate();
+        crate::activate();
 
         Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
     }
