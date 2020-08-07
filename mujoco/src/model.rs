@@ -32,32 +32,11 @@ impl Model {
                 err_buf.len() as std::os::raw::c_int,
             )
         };
+        from_xml_helper(model_ptr, err_buf)
+    }
 
-        let err_str = CString::new(err_buf).unwrap_or_else(|e| {
-            let nul_pos = e.nul_position();
-            let mut err_buf = e.into_vec();
-            debug_assert!(nul_pos < err_buf.len());
-            // Shrinks to all chars up to but not including nul byte
-            err_buf.resize_with(nul_pos, Default::default);
-            debug_assert_eq!(nul_pos, err_buf.len());
-            debug_assert!(!err_buf.contains(&b'\0'));
-            // This is unsafe for performance reasons, but could be switched back to a
-            // safe alternative
-            // Will shrink vec to fit. Not ideal.
-            unsafe { CString::from_vec_unchecked(err_buf) }
-        });
-        let err_str = err_str.into_string().expect("`CString` was not UTF-8!");
-
-        if !err_str.is_empty() {
-            return Err(err_str);
-        }
-        if model_ptr == std::ptr::null_mut() {
-            unreachable!(
-                "It shouldn't be possible to get a null pointer from mujoco \
-                without an error message!"
-            );
-        }
-        Ok(Model { ptr: model_ptr })
+    pub fn from_xml_str(xml: impl AsRef<str>) -> Result<Self, String> {
+        unimplemented!()
     }
 
     /// Serializes the `Model` into a binary vector
@@ -88,6 +67,27 @@ impl Clone for Model {
         };
         Self { ptr }
     }
+}
+
+/// Helper function for loading a model from xml
+fn from_xml_helper(
+    model_ptr: *mut mujoco_sys::no_render::_mjModel,
+    err_buf: Vec<u8>,
+) -> Result<Model, String> {
+    debug_assert_ne!(model_ptr, std::ptr::null_mut());
+    debug_assert_ne!(err_buf.len(), 0);
+    let err_str = crate::helpers::convert_err_buf(err_buf);
+
+    if !err_str.is_empty() {
+        return Err(err_str);
+    }
+    if model_ptr == std::ptr::null_mut() {
+        unreachable!(
+            "It shouldn't be possible to get a null pointer from mujoco \
+                without an error message!"
+        );
+    }
+    Ok(Model { ptr: model_ptr })
 }
 
 #[cfg(test)]

@@ -6,6 +6,8 @@ pub mod model;
 use lazy_static::lazy_static;
 use std::ffi::{CStr, CString};
 
+pub(crate) mod helpers;
+
 lazy_static! {
     /// The location of the MuJoCo key
     ///
