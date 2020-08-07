@@ -6,11 +6,11 @@ pub struct Model {
     ptr: *mut mujoco_sys::no_render::mjModel,
 }
 impl Model {
-    /// Loads a `Model` from a path to an XML file.
+    /// Loads a `Model` from a path to an XML file
     ///
     /// # Panics
     /// Panics if `path` is not valid Unicode or if it has a null byte in its
-    /// interior.
+    /// interior
     pub fn from_xml(path: impl AsRef<std::path::Path>) -> Result<Self, String> {
         let path = path.as_ref();
         if !path.is_file() {
