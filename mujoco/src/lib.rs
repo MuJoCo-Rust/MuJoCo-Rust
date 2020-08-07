@@ -2,6 +2,7 @@
 //! simulator commonly used for robotics and machine learning.
 
 pub mod model;
+mod vfs;
 
 use lazy_static::lazy_static;
 use std::ffi::{CStr, CString};
