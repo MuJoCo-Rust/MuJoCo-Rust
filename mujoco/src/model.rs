@@ -177,6 +177,7 @@ mod tests {
         assert_eq!(model_xml.to_vec(), model_file.to_vec());
     }
 
+    #[test]
     fn from_bytes() {
         activate();
         let model_xml = Model::from_xml_str(*SIMPLE_XML).unwrap();
