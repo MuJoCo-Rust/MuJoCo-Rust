@@ -1,4 +1,3 @@
-use crate::vfs::Vfs;
 use std::ffi::CString;
 
 use crate::VFS;
@@ -12,8 +11,7 @@ impl Model {
     /// Loads a `Model` from a path to an XML file
     ///
     /// # Panics
-    /// Panics if `path` is not valid Unicode or if it has a null byte in its
-    /// interior
+    /// Panics if the xml is invalid or the file doesn't exist
     pub fn from_xml(path: impl AsRef<std::path::Path>) -> Result<Self, String> {
         let path = path.as_ref();
         if !path.is_file() {
@@ -38,6 +36,10 @@ impl Model {
         from_xml_helper(model_ptr, err_buf)
     }
 
+    /// Loads a `Model` from an XML string
+    ///
+    /// # Panics
+    /// Panics if the xml is invalid
     pub fn from_xml_str(xml: impl AsRef<str>) -> Result<Self, String> {
         let xml = xml.as_ref();
         let filename = "from_xml_str";
@@ -60,6 +62,26 @@ impl Model {
             };
             vfs.delete_file(filename);
             from_xml_helper(model_ptr, err_buf)
+        })
+    }
+
+    /// Loads a model from a slice of bytes, interpreted as the MJB format
+    ///
+    /// # Panics
+    /// Panics if the bytes are an invalid model
+    pub fn from_bytes(bytes: impl AsRef<[u8]>) -> Self {
+        let bytes = bytes.as_ref();
+        let filename = "from_bytes";
+        let filename_cstr = CString::new(filename).unwrap();
+        VFS.with(|rcell| {
+            let mut vfs = rcell.borrow_mut();
+            vfs.add_file(filename, bytes).unwrap();
+
+            let model_ptr = unsafe {
+                mujoco_sys::no_render::mj_loadModel(filename_cstr.as_ptr(), &vfs.vfs)
+            };
+            vfs.delete_file(filename);
+            Self { ptr: model_ptr }
         })
     }
 
@@ -153,6 +175,14 @@ mod tests {
         let model_xml = Model::from_xml_str(*SIMPLE_XML).unwrap();
         let model_file = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
         assert_eq!(model_xml.to_vec(), model_file.to_vec());
+    }
+
+    fn from_bytes() {
+        activate();
+        let model_xml = Model::from_xml_str(*SIMPLE_XML).unwrap();
+        let model_xml_bytes = model_xml.to_vec();
+        let model_from_bytes = Model::from_bytes(&model_xml_bytes);
+        assert_eq!(model_from_bytes.to_vec(), model_xml_bytes);
     }
 
     #[test]
