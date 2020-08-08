@@ -1,4 +1,7 @@
+use crate::vfs::Vfs;
 use std::ffi::CString;
+
+use crate::VFS;
 
 /// A MuJoCo model
 #[derive(Debug)]
@@ -36,7 +39,28 @@ impl Model {
     }
 
     pub fn from_xml_str(xml: impl AsRef<str>) -> Result<Self, String> {
-        unimplemented!()
+        let xml = xml.as_ref();
+        let filename = "from_xml_str";
+        let filename_cstr = CString::new(filename).unwrap();
+        VFS.with(|rcell| {
+            let mut vfs = rcell.borrow_mut();
+            vfs.add_file(filename, xml.as_bytes()).unwrap();
+
+            let mut err_buf = Vec::new();
+            // TODO: Would it be safe to just allocate w/o init?
+            err_buf.resize(1000, b'\0'); // Allocate and initialize 1000 null bytes
+
+            let model_ptr = unsafe {
+                mujoco_sys::no_render::mj_loadXML(
+                    filename_cstr.as_ptr(),
+                    &vfs.vfs,
+                    err_buf.as_mut_ptr() as *mut std::os::raw::c_char,
+                    err_buf.len() as std::os::raw::c_int,
+                )
+            };
+            vfs.delete_file(filename);
+            from_xml_helper(model_ptr, err_buf)
+        })
     }
 
     /// Serializes the `Model` into a binary vector
@@ -104,17 +128,31 @@ mod tests {
                 .expect("Could not resolve absolute path for package root!");
         static ref SIMPLE_XML_PATH: std::path::PathBuf =
             PKG_ROOT.join("tests").join("res").join("simple.xml");
-    }
-
-    #[test]
-    fn should_work() {
-        assert!(true)
+        static ref SIMPLE_XML: &'static str = r#"
+            <mujoco>
+                <worldbody>
+                    <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
+                    <geom type="plane" size="1 1 0.1" rgba=".9 0 0 1"/>
+                    <body pos="0 0 1">
+                        <joint type="free"/>
+                        <geom type="box" size=".1 .2 .3" rgba="0 .9 0 1"/>
+                    </body>
+                </worldbody>
+            </mujoco>"#;
     }
 
     #[test]
     fn from_xml() {
         activate();
         Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
+    }
+
+    #[test]
+    fn from_xml_str() {
+        activate();
+        let model_xml = Model::from_xml_str(*SIMPLE_XML).unwrap();
+        let model_file = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
+        assert_eq!(model_xml.to_vec(), model_file.to_vec());
     }
 
     #[test]

@@ -5,6 +5,7 @@ pub mod model;
 mod vfs;
 
 use lazy_static::lazy_static;
+use std::cell::RefCell;
 use std::ffi::{CStr, CString};
 
 pub(crate) mod helpers;
@@ -24,6 +25,15 @@ lazy_static! {
             .join(".mujoco").join("mjkey.txt").to_str().unwrap().to_owned(),
         Err(std::env::VarError::NotUnicode(_)) => panic!("`MUJOCO_RS_KEY_LOC` must be unicode!")
     };
+}
+
+// Using a thread-local VFS is how we enable the use of temporary VFS objects in
+// a global storage without accidentally getting filename collisions or thread
+// safety issues. The RefCell is there to allow us to mutate safely (it could
+// probably be mutated via unsafe code everywhere but that is a minor speed
+// improvement for many unsafe LOC)
+thread_local! {
+    static VFS: RefCell<vfs::Vfs> = RefCell::new(vfs::Vfs::new());
 }
 
 /// Activates MuJoCo using the default key [`KEY_LOC`]

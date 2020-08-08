@@ -17,7 +17,7 @@ impl std::fmt::Display for AddError {
 impl std::error::Error for AddError {}
 
 pub struct Vfs {
-    vfs: mujoco_sys::no_render::mjVFS,
+    pub(crate) vfs: mujoco_sys::no_render::mjVFS,
 }
 impl Vfs {
     /// Initializes a new empty `Vfs`
