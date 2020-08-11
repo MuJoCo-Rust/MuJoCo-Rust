@@ -2,7 +2,11 @@
 //! simulator commonly used for robotics and machine learning.
 
 pub mod model;
+pub mod state;
 mod vfs;
+
+pub use model::Model;
+pub use state::State;
 
 use lazy_static::lazy_static;
 use std::cell::RefCell;
@@ -78,8 +82,29 @@ pub fn activate_from_cstr(key_loc: impl AsRef<CStr>) {
 
 #[cfg(test)]
 mod tests {
-
+    use lazy_static::lazy_static;
     use std::ffi::CString;
+
+    lazy_static! {
+        pub(crate) static ref PKG_ROOT: std::path::PathBuf =
+            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                .canonicalize()
+                .expect("Could not resolve absolute path for package root!");
+        pub(crate) static ref SIMPLE_XML_PATH: std::path::PathBuf =
+            PKG_ROOT.join("tests").join("res").join("simple.xml");
+        pub(crate) static ref SIMPLE_XML: &'static str = r#"
+            <mujoco>
+                <worldbody>
+                    <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
+                    <geom type="plane" size="1 1 0.1" rgba=".9 0 0 1"/>
+                    <body pos="0 0 1">
+                        <joint type="free"/>
+                        <geom type="box" size=".1 .2 .3" rgba="0 .9 0 1"/>
+                    </body>
+                </worldbody>
+            </mujoco>"#;
+    }
+
     #[test]
     fn activate() {
         let s: &str = &super::KEY_LOC;

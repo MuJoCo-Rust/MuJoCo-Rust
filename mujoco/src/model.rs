@@ -5,7 +5,7 @@ use crate::VFS;
 /// A MuJoCo model
 #[derive(Debug)]
 pub struct Model {
-    ptr: *mut mujoco_sys::no_render::mjModel,
+    pub(crate) ptr: *mut mujoco_sys::no_render::mjModel,
 }
 impl Model {
     /// Loads a `Model` from a path to an XML file
@@ -140,28 +140,7 @@ fn from_xml_helper(
 mod tests {
     use super::Model;
     use crate::activate;
-
-    use lazy_static::lazy_static;
-
-    lazy_static! {
-        static ref PKG_ROOT: std::path::PathBuf =
-            std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-                .canonicalize()
-                .expect("Could not resolve absolute path for package root!");
-        static ref SIMPLE_XML_PATH: std::path::PathBuf =
-            PKG_ROOT.join("tests").join("res").join("simple.xml");
-        static ref SIMPLE_XML: &'static str = r#"
-            <mujoco>
-                <worldbody>
-                    <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
-                    <geom type="plane" size="1 1 0.1" rgba=".9 0 0 1"/>
-                    <body pos="0 0 1">
-                        <joint type="free"/>
-                        <geom type="box" size=".1 .2 .3" rgba="0 .9 0 1"/>
-                    </body>
-                </worldbody>
-            </mujoco>"#;
-    }
+    use crate::tests::{SIMPLE_XML, SIMPLE_XML_PATH};
 
     #[test]
     fn from_xml() {
