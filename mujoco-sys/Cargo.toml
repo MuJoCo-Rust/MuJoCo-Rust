@@ -1,6 +1,6 @@
 [package]
 name = "mujoco-sys"
-version = "0.0.0"
+version = "0.0.1"
 authors = ["Ryan Butler <thebutlah@gmail.com>"]
 edition = "2018"
 description = "FFI bindings to MuJoCo"
