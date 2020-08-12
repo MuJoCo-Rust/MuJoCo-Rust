@@ -27,7 +27,11 @@ fn main() {
             .whitelist_type(whitelist)
             .whitelist_function(whitelist)
             .whitelist_var(whitelist)
+            .rustified_enum(r"_?mjt.+")
+            .bitfield_enum(r"_?mjt.+Bit")
             .default_enum_style(EnumVariation::NewType { is_bitfield: false })
+            // MuJoCo mjtWhatevers enums are not actually used in the API, so this will
+            // make re-exposing for the user API easier
             .size_t_is_usize(true)
             .derive_default(true)
             .clang_arg("-I".to_owned() + mj_include.to_str().unwrap())

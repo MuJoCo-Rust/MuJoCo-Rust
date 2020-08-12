@@ -98,6 +98,34 @@ impl _mjtDisableBit {
 impl _mjtDisableBit {
     pub const mjNDISABLE: _mjtDisableBit = _mjtDisableBit(12);
 }
+impl ::std::ops::BitOr<_mjtDisableBit> for _mjtDisableBit {
+    type Output = Self;
+
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        _mjtDisableBit(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for _mjtDisableBit {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: _mjtDisableBit) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<_mjtDisableBit> for _mjtDisableBit {
+    type Output = Self;
+
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        _mjtDisableBit(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for _mjtDisableBit {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: _mjtDisableBit) {
+        self.0 &= rhs.0;
+    }
+}
 #[repr(transparent)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct _mjtDisableBit(pub u32);
@@ -117,562 +145,302 @@ impl _mjtEnableBit {
 impl _mjtEnableBit {
     pub const mjNENABLE: _mjtEnableBit = _mjtEnableBit(4);
 }
+impl ::std::ops::BitOr<_mjtEnableBit> for _mjtEnableBit {
+    type Output = Self;
+
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        _mjtEnableBit(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for _mjtEnableBit {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: _mjtEnableBit) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<_mjtEnableBit> for _mjtEnableBit {
+    type Output = Self;
+
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        _mjtEnableBit(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for _mjtEnableBit {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: _mjtEnableBit) {
+        self.0 &= rhs.0;
+    }
+}
 #[repr(transparent)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct _mjtEnableBit(pub u32);
 pub use self::_mjtEnableBit as mjtEnableBit;
-impl _mjtJoint {
-    pub const mjJNT_FREE: _mjtJoint = _mjtJoint(0);
-}
-impl _mjtJoint {
-    pub const mjJNT_BALL: _mjtJoint = _mjtJoint(1);
-}
-impl _mjtJoint {
-    pub const mjJNT_SLIDE: _mjtJoint = _mjtJoint(2);
-}
-impl _mjtJoint {
-    pub const mjJNT_HINGE: _mjtJoint = _mjtJoint(3);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtJoint(pub u32);
+pub enum _mjtJoint {
+    mjJNT_FREE = 0,
+    mjJNT_BALL = 1,
+    mjJNT_SLIDE = 2,
+    mjJNT_HINGE = 3,
+}
 pub use self::_mjtJoint as mjtJoint;
-impl _mjtGeom {
-    pub const mjGEOM_PLANE: _mjtGeom = _mjtGeom(0);
-}
-impl _mjtGeom {
-    pub const mjGEOM_HFIELD: _mjtGeom = _mjtGeom(1);
-}
-impl _mjtGeom {
-    pub const mjGEOM_SPHERE: _mjtGeom = _mjtGeom(2);
-}
-impl _mjtGeom {
-    pub const mjGEOM_CAPSULE: _mjtGeom = _mjtGeom(3);
-}
-impl _mjtGeom {
-    pub const mjGEOM_ELLIPSOID: _mjtGeom = _mjtGeom(4);
-}
-impl _mjtGeom {
-    pub const mjGEOM_CYLINDER: _mjtGeom = _mjtGeom(5);
-}
-impl _mjtGeom {
-    pub const mjGEOM_BOX: _mjtGeom = _mjtGeom(6);
-}
-impl _mjtGeom {
-    pub const mjGEOM_MESH: _mjtGeom = _mjtGeom(7);
-}
-impl _mjtGeom {
-    pub const mjNGEOMTYPES: _mjtGeom = _mjtGeom(8);
-}
-impl _mjtGeom {
-    pub const mjGEOM_ARROW: _mjtGeom = _mjtGeom(100);
-}
-impl _mjtGeom {
-    pub const mjGEOM_ARROW1: _mjtGeom = _mjtGeom(101);
-}
-impl _mjtGeom {
-    pub const mjGEOM_ARROW2: _mjtGeom = _mjtGeom(102);
-}
-impl _mjtGeom {
-    pub const mjGEOM_LINE: _mjtGeom = _mjtGeom(103);
-}
-impl _mjtGeom {
-    pub const mjGEOM_SKIN: _mjtGeom = _mjtGeom(104);
-}
-impl _mjtGeom {
-    pub const mjGEOM_LABEL: _mjtGeom = _mjtGeom(105);
-}
-impl _mjtGeom {
-    pub const mjGEOM_NONE: _mjtGeom = _mjtGeom(1001);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtGeom(pub u32);
+pub enum _mjtGeom {
+    mjGEOM_PLANE = 0,
+    mjGEOM_HFIELD = 1,
+    mjGEOM_SPHERE = 2,
+    mjGEOM_CAPSULE = 3,
+    mjGEOM_ELLIPSOID = 4,
+    mjGEOM_CYLINDER = 5,
+    mjGEOM_BOX = 6,
+    mjGEOM_MESH = 7,
+    mjNGEOMTYPES = 8,
+    mjGEOM_ARROW = 100,
+    mjGEOM_ARROW1 = 101,
+    mjGEOM_ARROW2 = 102,
+    mjGEOM_LINE = 103,
+    mjGEOM_SKIN = 104,
+    mjGEOM_LABEL = 105,
+    mjGEOM_NONE = 1001,
+}
 pub use self::_mjtGeom as mjtGeom;
-impl _mjtCamLight {
-    pub const mjCAMLIGHT_FIXED: _mjtCamLight = _mjtCamLight(0);
-}
-impl _mjtCamLight {
-    pub const mjCAMLIGHT_TRACK: _mjtCamLight = _mjtCamLight(1);
-}
-impl _mjtCamLight {
-    pub const mjCAMLIGHT_TRACKCOM: _mjtCamLight = _mjtCamLight(2);
-}
-impl _mjtCamLight {
-    pub const mjCAMLIGHT_TARGETBODY: _mjtCamLight = _mjtCamLight(3);
-}
-impl _mjtCamLight {
-    pub const mjCAMLIGHT_TARGETBODYCOM: _mjtCamLight = _mjtCamLight(4);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtCamLight(pub u32);
+pub enum _mjtCamLight {
+    mjCAMLIGHT_FIXED = 0,
+    mjCAMLIGHT_TRACK = 1,
+    mjCAMLIGHT_TRACKCOM = 2,
+    mjCAMLIGHT_TARGETBODY = 3,
+    mjCAMLIGHT_TARGETBODYCOM = 4,
+}
 pub use self::_mjtCamLight as mjtCamLight;
-impl _mjtTexture {
-    pub const mjTEXTURE_2D: _mjtTexture = _mjtTexture(0);
-}
-impl _mjtTexture {
-    pub const mjTEXTURE_CUBE: _mjtTexture = _mjtTexture(1);
-}
-impl _mjtTexture {
-    pub const mjTEXTURE_SKYBOX: _mjtTexture = _mjtTexture(2);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtTexture(pub u32);
+pub enum _mjtTexture {
+    mjTEXTURE_2D = 0,
+    mjTEXTURE_CUBE = 1,
+    mjTEXTURE_SKYBOX = 2,
+}
 pub use self::_mjtTexture as mjtTexture;
-impl _mjtIntegrator {
-    pub const mjINT_EULER: _mjtIntegrator = _mjtIntegrator(0);
-}
-impl _mjtIntegrator {
-    pub const mjINT_RK4: _mjtIntegrator = _mjtIntegrator(1);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtIntegrator(pub u32);
+pub enum _mjtIntegrator {
+    mjINT_EULER = 0,
+    mjINT_RK4 = 1,
+}
 pub use self::_mjtIntegrator as mjtIntegrator;
-impl _mjtCollision {
-    pub const mjCOL_ALL: _mjtCollision = _mjtCollision(0);
-}
-impl _mjtCollision {
-    pub const mjCOL_PAIR: _mjtCollision = _mjtCollision(1);
-}
-impl _mjtCollision {
-    pub const mjCOL_DYNAMIC: _mjtCollision = _mjtCollision(2);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtCollision(pub u32);
+pub enum _mjtCollision {
+    mjCOL_ALL = 0,
+    mjCOL_PAIR = 1,
+    mjCOL_DYNAMIC = 2,
+}
 pub use self::_mjtCollision as mjtCollision;
-impl _mjtCone {
-    pub const mjCONE_PYRAMIDAL: _mjtCone = _mjtCone(0);
-}
-impl _mjtCone {
-    pub const mjCONE_ELLIPTIC: _mjtCone = _mjtCone(1);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtCone(pub u32);
+pub enum _mjtCone {
+    mjCONE_PYRAMIDAL = 0,
+    mjCONE_ELLIPTIC = 1,
+}
 pub use self::_mjtCone as mjtCone;
-impl _mjtJacobian {
-    pub const mjJAC_DENSE: _mjtJacobian = _mjtJacobian(0);
-}
-impl _mjtJacobian {
-    pub const mjJAC_SPARSE: _mjtJacobian = _mjtJacobian(1);
-}
-impl _mjtJacobian {
-    pub const mjJAC_AUTO: _mjtJacobian = _mjtJacobian(2);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtJacobian(pub u32);
+pub enum _mjtJacobian {
+    mjJAC_DENSE = 0,
+    mjJAC_SPARSE = 1,
+    mjJAC_AUTO = 2,
+}
 pub use self::_mjtJacobian as mjtJacobian;
-impl _mjtSolver {
-    pub const mjSOL_PGS: _mjtSolver = _mjtSolver(0);
-}
-impl _mjtSolver {
-    pub const mjSOL_CG: _mjtSolver = _mjtSolver(1);
-}
-impl _mjtSolver {
-    pub const mjSOL_NEWTON: _mjtSolver = _mjtSolver(2);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtSolver(pub u32);
+pub enum _mjtSolver {
+    mjSOL_PGS = 0,
+    mjSOL_CG = 1,
+    mjSOL_NEWTON = 2,
+}
 pub use self::_mjtSolver as mjtSolver;
-impl _mjtEq {
-    pub const mjEQ_CONNECT: _mjtEq = _mjtEq(0);
-}
-impl _mjtEq {
-    pub const mjEQ_WELD: _mjtEq = _mjtEq(1);
-}
-impl _mjtEq {
-    pub const mjEQ_JOINT: _mjtEq = _mjtEq(2);
-}
-impl _mjtEq {
-    pub const mjEQ_TENDON: _mjtEq = _mjtEq(3);
-}
-impl _mjtEq {
-    pub const mjEQ_DISTANCE: _mjtEq = _mjtEq(4);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtEq(pub u32);
+pub enum _mjtEq {
+    mjEQ_CONNECT = 0,
+    mjEQ_WELD = 1,
+    mjEQ_JOINT = 2,
+    mjEQ_TENDON = 3,
+    mjEQ_DISTANCE = 4,
+}
 pub use self::_mjtEq as mjtEq;
-impl _mjtWrap {
-    pub const mjWRAP_NONE: _mjtWrap = _mjtWrap(0);
-}
-impl _mjtWrap {
-    pub const mjWRAP_JOINT: _mjtWrap = _mjtWrap(1);
-}
-impl _mjtWrap {
-    pub const mjWRAP_PULLEY: _mjtWrap = _mjtWrap(2);
-}
-impl _mjtWrap {
-    pub const mjWRAP_SITE: _mjtWrap = _mjtWrap(3);
-}
-impl _mjtWrap {
-    pub const mjWRAP_SPHERE: _mjtWrap = _mjtWrap(4);
-}
-impl _mjtWrap {
-    pub const mjWRAP_CYLINDER: _mjtWrap = _mjtWrap(5);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtWrap(pub u32);
+pub enum _mjtWrap {
+    mjWRAP_NONE = 0,
+    mjWRAP_JOINT = 1,
+    mjWRAP_PULLEY = 2,
+    mjWRAP_SITE = 3,
+    mjWRAP_SPHERE = 4,
+    mjWRAP_CYLINDER = 5,
+}
 pub use self::_mjtWrap as mjtWrap;
-impl _mjtTrn {
-    pub const mjTRN_JOINT: _mjtTrn = _mjtTrn(0);
-}
-impl _mjtTrn {
-    pub const mjTRN_JOINTINPARENT: _mjtTrn = _mjtTrn(1);
-}
-impl _mjtTrn {
-    pub const mjTRN_SLIDERCRANK: _mjtTrn = _mjtTrn(2);
-}
-impl _mjtTrn {
-    pub const mjTRN_TENDON: _mjtTrn = _mjtTrn(3);
-}
-impl _mjtTrn {
-    pub const mjTRN_SITE: _mjtTrn = _mjtTrn(4);
-}
-impl _mjtTrn {
-    pub const mjTRN_UNDEFINED: _mjtTrn = _mjtTrn(1000);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtTrn(pub u32);
+pub enum _mjtTrn {
+    mjTRN_JOINT = 0,
+    mjTRN_JOINTINPARENT = 1,
+    mjTRN_SLIDERCRANK = 2,
+    mjTRN_TENDON = 3,
+    mjTRN_SITE = 4,
+    mjTRN_UNDEFINED = 1000,
+}
 pub use self::_mjtTrn as mjtTrn;
-impl _mjtDyn {
-    pub const mjDYN_NONE: _mjtDyn = _mjtDyn(0);
-}
-impl _mjtDyn {
-    pub const mjDYN_INTEGRATOR: _mjtDyn = _mjtDyn(1);
-}
-impl _mjtDyn {
-    pub const mjDYN_FILTER: _mjtDyn = _mjtDyn(2);
-}
-impl _mjtDyn {
-    pub const mjDYN_MUSCLE: _mjtDyn = _mjtDyn(3);
-}
-impl _mjtDyn {
-    pub const mjDYN_USER: _mjtDyn = _mjtDyn(4);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtDyn(pub u32);
+pub enum _mjtDyn {
+    mjDYN_NONE = 0,
+    mjDYN_INTEGRATOR = 1,
+    mjDYN_FILTER = 2,
+    mjDYN_MUSCLE = 3,
+    mjDYN_USER = 4,
+}
 pub use self::_mjtDyn as mjtDyn;
-impl _mjtGain {
-    pub const mjGAIN_FIXED: _mjtGain = _mjtGain(0);
-}
-impl _mjtGain {
-    pub const mjGAIN_MUSCLE: _mjtGain = _mjtGain(1);
-}
-impl _mjtGain {
-    pub const mjGAIN_USER: _mjtGain = _mjtGain(2);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtGain(pub u32);
+pub enum _mjtGain {
+    mjGAIN_FIXED = 0,
+    mjGAIN_MUSCLE = 1,
+    mjGAIN_USER = 2,
+}
 pub use self::_mjtGain as mjtGain;
-impl _mjtBias {
-    pub const mjBIAS_NONE: _mjtBias = _mjtBias(0);
-}
-impl _mjtBias {
-    pub const mjBIAS_AFFINE: _mjtBias = _mjtBias(1);
-}
-impl _mjtBias {
-    pub const mjBIAS_MUSCLE: _mjtBias = _mjtBias(2);
-}
-impl _mjtBias {
-    pub const mjBIAS_USER: _mjtBias = _mjtBias(3);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtBias(pub u32);
+pub enum _mjtBias {
+    mjBIAS_NONE = 0,
+    mjBIAS_AFFINE = 1,
+    mjBIAS_MUSCLE = 2,
+    mjBIAS_USER = 3,
+}
 pub use self::_mjtBias as mjtBias;
-impl _mjtObj {
-    pub const mjOBJ_UNKNOWN: _mjtObj = _mjtObj(0);
-}
-impl _mjtObj {
-    pub const mjOBJ_BODY: _mjtObj = _mjtObj(1);
-}
-impl _mjtObj {
-    pub const mjOBJ_XBODY: _mjtObj = _mjtObj(2);
-}
-impl _mjtObj {
-    pub const mjOBJ_JOINT: _mjtObj = _mjtObj(3);
-}
-impl _mjtObj {
-    pub const mjOBJ_DOF: _mjtObj = _mjtObj(4);
-}
-impl _mjtObj {
-    pub const mjOBJ_GEOM: _mjtObj = _mjtObj(5);
-}
-impl _mjtObj {
-    pub const mjOBJ_SITE: _mjtObj = _mjtObj(6);
-}
-impl _mjtObj {
-    pub const mjOBJ_CAMERA: _mjtObj = _mjtObj(7);
-}
-impl _mjtObj {
-    pub const mjOBJ_LIGHT: _mjtObj = _mjtObj(8);
-}
-impl _mjtObj {
-    pub const mjOBJ_MESH: _mjtObj = _mjtObj(9);
-}
-impl _mjtObj {
-    pub const mjOBJ_SKIN: _mjtObj = _mjtObj(10);
-}
-impl _mjtObj {
-    pub const mjOBJ_HFIELD: _mjtObj = _mjtObj(11);
-}
-impl _mjtObj {
-    pub const mjOBJ_TEXTURE: _mjtObj = _mjtObj(12);
-}
-impl _mjtObj {
-    pub const mjOBJ_MATERIAL: _mjtObj = _mjtObj(13);
-}
-impl _mjtObj {
-    pub const mjOBJ_PAIR: _mjtObj = _mjtObj(14);
-}
-impl _mjtObj {
-    pub const mjOBJ_EXCLUDE: _mjtObj = _mjtObj(15);
-}
-impl _mjtObj {
-    pub const mjOBJ_EQUALITY: _mjtObj = _mjtObj(16);
-}
-impl _mjtObj {
-    pub const mjOBJ_TENDON: _mjtObj = _mjtObj(17);
-}
-impl _mjtObj {
-    pub const mjOBJ_ACTUATOR: _mjtObj = _mjtObj(18);
-}
-impl _mjtObj {
-    pub const mjOBJ_SENSOR: _mjtObj = _mjtObj(19);
-}
-impl _mjtObj {
-    pub const mjOBJ_NUMERIC: _mjtObj = _mjtObj(20);
-}
-impl _mjtObj {
-    pub const mjOBJ_TEXT: _mjtObj = _mjtObj(21);
-}
-impl _mjtObj {
-    pub const mjOBJ_TUPLE: _mjtObj = _mjtObj(22);
-}
-impl _mjtObj {
-    pub const mjOBJ_KEY: _mjtObj = _mjtObj(23);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtObj(pub u32);
+pub enum _mjtObj {
+    mjOBJ_UNKNOWN = 0,
+    mjOBJ_BODY = 1,
+    mjOBJ_XBODY = 2,
+    mjOBJ_JOINT = 3,
+    mjOBJ_DOF = 4,
+    mjOBJ_GEOM = 5,
+    mjOBJ_SITE = 6,
+    mjOBJ_CAMERA = 7,
+    mjOBJ_LIGHT = 8,
+    mjOBJ_MESH = 9,
+    mjOBJ_SKIN = 10,
+    mjOBJ_HFIELD = 11,
+    mjOBJ_TEXTURE = 12,
+    mjOBJ_MATERIAL = 13,
+    mjOBJ_PAIR = 14,
+    mjOBJ_EXCLUDE = 15,
+    mjOBJ_EQUALITY = 16,
+    mjOBJ_TENDON = 17,
+    mjOBJ_ACTUATOR = 18,
+    mjOBJ_SENSOR = 19,
+    mjOBJ_NUMERIC = 20,
+    mjOBJ_TEXT = 21,
+    mjOBJ_TUPLE = 22,
+    mjOBJ_KEY = 23,
+}
 pub use self::_mjtObj as mjtObj;
-impl _mjtConstraint {
-    pub const mjCNSTR_EQUALITY: _mjtConstraint = _mjtConstraint(0);
-}
-impl _mjtConstraint {
-    pub const mjCNSTR_FRICTION_DOF: _mjtConstraint = _mjtConstraint(1);
-}
-impl _mjtConstraint {
-    pub const mjCNSTR_FRICTION_TENDON: _mjtConstraint = _mjtConstraint(2);
-}
-impl _mjtConstraint {
-    pub const mjCNSTR_LIMIT_JOINT: _mjtConstraint = _mjtConstraint(3);
-}
-impl _mjtConstraint {
-    pub const mjCNSTR_LIMIT_TENDON: _mjtConstraint = _mjtConstraint(4);
-}
-impl _mjtConstraint {
-    pub const mjCNSTR_CONTACT_FRICTIONLESS: _mjtConstraint = _mjtConstraint(5);
-}
-impl _mjtConstraint {
-    pub const mjCNSTR_CONTACT_PYRAMIDAL: _mjtConstraint = _mjtConstraint(6);
-}
-impl _mjtConstraint {
-    pub const mjCNSTR_CONTACT_ELLIPTIC: _mjtConstraint = _mjtConstraint(7);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtConstraint(pub u32);
+pub enum _mjtConstraint {
+    mjCNSTR_EQUALITY = 0,
+    mjCNSTR_FRICTION_DOF = 1,
+    mjCNSTR_FRICTION_TENDON = 2,
+    mjCNSTR_LIMIT_JOINT = 3,
+    mjCNSTR_LIMIT_TENDON = 4,
+    mjCNSTR_CONTACT_FRICTIONLESS = 5,
+    mjCNSTR_CONTACT_PYRAMIDAL = 6,
+    mjCNSTR_CONTACT_ELLIPTIC = 7,
+}
 pub use self::_mjtConstraint as mjtConstraint;
-impl _mjtConstraintState {
-    pub const mjCNSTRSTATE_SATISFIED: _mjtConstraintState = _mjtConstraintState(0);
-}
-impl _mjtConstraintState {
-    pub const mjCNSTRSTATE_QUADRATIC: _mjtConstraintState = _mjtConstraintState(1);
-}
-impl _mjtConstraintState {
-    pub const mjCNSTRSTATE_LINEARNEG: _mjtConstraintState = _mjtConstraintState(2);
-}
-impl _mjtConstraintState {
-    pub const mjCNSTRSTATE_LINEARPOS: _mjtConstraintState = _mjtConstraintState(3);
-}
-impl _mjtConstraintState {
-    pub const mjCNSTRSTATE_CONE: _mjtConstraintState = _mjtConstraintState(4);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtConstraintState(pub u32);
+pub enum _mjtConstraintState {
+    mjCNSTRSTATE_SATISFIED = 0,
+    mjCNSTRSTATE_QUADRATIC = 1,
+    mjCNSTRSTATE_LINEARNEG = 2,
+    mjCNSTRSTATE_LINEARPOS = 3,
+    mjCNSTRSTATE_CONE = 4,
+}
 pub use self::_mjtConstraintState as mjtConstraintState;
-impl _mjtSensor {
-    pub const mjSENS_TOUCH: _mjtSensor = _mjtSensor(0);
-}
-impl _mjtSensor {
-    pub const mjSENS_ACCELEROMETER: _mjtSensor = _mjtSensor(1);
-}
-impl _mjtSensor {
-    pub const mjSENS_VELOCIMETER: _mjtSensor = _mjtSensor(2);
-}
-impl _mjtSensor {
-    pub const mjSENS_GYRO: _mjtSensor = _mjtSensor(3);
-}
-impl _mjtSensor {
-    pub const mjSENS_FORCE: _mjtSensor = _mjtSensor(4);
-}
-impl _mjtSensor {
-    pub const mjSENS_TORQUE: _mjtSensor = _mjtSensor(5);
-}
-impl _mjtSensor {
-    pub const mjSENS_MAGNETOMETER: _mjtSensor = _mjtSensor(6);
-}
-impl _mjtSensor {
-    pub const mjSENS_RANGEFINDER: _mjtSensor = _mjtSensor(7);
-}
-impl _mjtSensor {
-    pub const mjSENS_JOINTPOS: _mjtSensor = _mjtSensor(8);
-}
-impl _mjtSensor {
-    pub const mjSENS_JOINTVEL: _mjtSensor = _mjtSensor(9);
-}
-impl _mjtSensor {
-    pub const mjSENS_TENDONPOS: _mjtSensor = _mjtSensor(10);
-}
-impl _mjtSensor {
-    pub const mjSENS_TENDONVEL: _mjtSensor = _mjtSensor(11);
-}
-impl _mjtSensor {
-    pub const mjSENS_ACTUATORPOS: _mjtSensor = _mjtSensor(12);
-}
-impl _mjtSensor {
-    pub const mjSENS_ACTUATORVEL: _mjtSensor = _mjtSensor(13);
-}
-impl _mjtSensor {
-    pub const mjSENS_ACTUATORFRC: _mjtSensor = _mjtSensor(14);
-}
-impl _mjtSensor {
-    pub const mjSENS_BALLQUAT: _mjtSensor = _mjtSensor(15);
-}
-impl _mjtSensor {
-    pub const mjSENS_BALLANGVEL: _mjtSensor = _mjtSensor(16);
-}
-impl _mjtSensor {
-    pub const mjSENS_JOINTLIMITPOS: _mjtSensor = _mjtSensor(17);
-}
-impl _mjtSensor {
-    pub const mjSENS_JOINTLIMITVEL: _mjtSensor = _mjtSensor(18);
-}
-impl _mjtSensor {
-    pub const mjSENS_JOINTLIMITFRC: _mjtSensor = _mjtSensor(19);
-}
-impl _mjtSensor {
-    pub const mjSENS_TENDONLIMITPOS: _mjtSensor = _mjtSensor(20);
-}
-impl _mjtSensor {
-    pub const mjSENS_TENDONLIMITVEL: _mjtSensor = _mjtSensor(21);
-}
-impl _mjtSensor {
-    pub const mjSENS_TENDONLIMITFRC: _mjtSensor = _mjtSensor(22);
-}
-impl _mjtSensor {
-    pub const mjSENS_FRAMEPOS: _mjtSensor = _mjtSensor(23);
-}
-impl _mjtSensor {
-    pub const mjSENS_FRAMEQUAT: _mjtSensor = _mjtSensor(24);
-}
-impl _mjtSensor {
-    pub const mjSENS_FRAMEXAXIS: _mjtSensor = _mjtSensor(25);
-}
-impl _mjtSensor {
-    pub const mjSENS_FRAMEYAXIS: _mjtSensor = _mjtSensor(26);
-}
-impl _mjtSensor {
-    pub const mjSENS_FRAMEZAXIS: _mjtSensor = _mjtSensor(27);
-}
-impl _mjtSensor {
-    pub const mjSENS_FRAMELINVEL: _mjtSensor = _mjtSensor(28);
-}
-impl _mjtSensor {
-    pub const mjSENS_FRAMEANGVEL: _mjtSensor = _mjtSensor(29);
-}
-impl _mjtSensor {
-    pub const mjSENS_FRAMELINACC: _mjtSensor = _mjtSensor(30);
-}
-impl _mjtSensor {
-    pub const mjSENS_FRAMEANGACC: _mjtSensor = _mjtSensor(31);
-}
-impl _mjtSensor {
-    pub const mjSENS_SUBTREECOM: _mjtSensor = _mjtSensor(32);
-}
-impl _mjtSensor {
-    pub const mjSENS_SUBTREELINVEL: _mjtSensor = _mjtSensor(33);
-}
-impl _mjtSensor {
-    pub const mjSENS_SUBTREEANGMOM: _mjtSensor = _mjtSensor(34);
-}
-impl _mjtSensor {
-    pub const mjSENS_USER: _mjtSensor = _mjtSensor(35);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtSensor(pub u32);
+pub enum _mjtSensor {
+    mjSENS_TOUCH = 0,
+    mjSENS_ACCELEROMETER = 1,
+    mjSENS_VELOCIMETER = 2,
+    mjSENS_GYRO = 3,
+    mjSENS_FORCE = 4,
+    mjSENS_TORQUE = 5,
+    mjSENS_MAGNETOMETER = 6,
+    mjSENS_RANGEFINDER = 7,
+    mjSENS_JOINTPOS = 8,
+    mjSENS_JOINTVEL = 9,
+    mjSENS_TENDONPOS = 10,
+    mjSENS_TENDONVEL = 11,
+    mjSENS_ACTUATORPOS = 12,
+    mjSENS_ACTUATORVEL = 13,
+    mjSENS_ACTUATORFRC = 14,
+    mjSENS_BALLQUAT = 15,
+    mjSENS_BALLANGVEL = 16,
+    mjSENS_JOINTLIMITPOS = 17,
+    mjSENS_JOINTLIMITVEL = 18,
+    mjSENS_JOINTLIMITFRC = 19,
+    mjSENS_TENDONLIMITPOS = 20,
+    mjSENS_TENDONLIMITVEL = 21,
+    mjSENS_TENDONLIMITFRC = 22,
+    mjSENS_FRAMEPOS = 23,
+    mjSENS_FRAMEQUAT = 24,
+    mjSENS_FRAMEXAXIS = 25,
+    mjSENS_FRAMEYAXIS = 26,
+    mjSENS_FRAMEZAXIS = 27,
+    mjSENS_FRAMELINVEL = 28,
+    mjSENS_FRAMEANGVEL = 29,
+    mjSENS_FRAMELINACC = 30,
+    mjSENS_FRAMEANGACC = 31,
+    mjSENS_SUBTREECOM = 32,
+    mjSENS_SUBTREELINVEL = 33,
+    mjSENS_SUBTREEANGMOM = 34,
+    mjSENS_USER = 35,
+}
 pub use self::_mjtSensor as mjtSensor;
-impl _mjtStage {
-    pub const mjSTAGE_NONE: _mjtStage = _mjtStage(0);
-}
-impl _mjtStage {
-    pub const mjSTAGE_POS: _mjtStage = _mjtStage(1);
-}
-impl _mjtStage {
-    pub const mjSTAGE_VEL: _mjtStage = _mjtStage(2);
-}
-impl _mjtStage {
-    pub const mjSTAGE_ACC: _mjtStage = _mjtStage(3);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtStage(pub u32);
+pub enum _mjtStage {
+    mjSTAGE_NONE = 0,
+    mjSTAGE_POS = 1,
+    mjSTAGE_VEL = 2,
+    mjSTAGE_ACC = 3,
+}
 pub use self::_mjtStage as mjtStage;
-impl _mjtDataType {
-    pub const mjDATATYPE_REAL: _mjtDataType = _mjtDataType(0);
-}
-impl _mjtDataType {
-    pub const mjDATATYPE_POSITIVE: _mjtDataType = _mjtDataType(1);
-}
-impl _mjtDataType {
-    pub const mjDATATYPE_AXIS: _mjtDataType = _mjtDataType(2);
-}
-impl _mjtDataType {
-    pub const mjDATATYPE_QUATERNION: _mjtDataType = _mjtDataType(3);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtDataType(pub u32);
+pub enum _mjtDataType {
+    mjDATATYPE_REAL = 0,
+    mjDATATYPE_POSITIVE = 1,
+    mjDATATYPE_AXIS = 2,
+    mjDATATYPE_QUATERNION = 3,
+}
 pub use self::_mjtDataType as mjtDataType;
-impl _mjtLRMode {
-    pub const mjLRMODE_NONE: _mjtLRMode = _mjtLRMode(0);
-}
-impl _mjtLRMode {
-    pub const mjLRMODE_MUSCLE: _mjtLRMode = _mjtLRMode(1);
-}
-impl _mjtLRMode {
-    pub const mjLRMODE_MUSCLEUSER: _mjtLRMode = _mjtLRMode(2);
-}
-impl _mjtLRMode {
-    pub const mjLRMODE_ALL: _mjtLRMode = _mjtLRMode(3);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtLRMode(pub u32);
+pub enum _mjtLRMode {
+    mjLRMODE_NONE = 0,
+    mjLRMODE_MUSCLE = 1,
+    mjLRMODE_MUSCLEUSER = 2,
+    mjLRMODE_ALL = 3,
+}
 pub use self::_mjtLRMode as mjtLRMode;
 #[repr(C)]
 #[derive(Debug, Default, Copy, Clone)]
@@ -6308,82 +6076,38 @@ impl Default for _mjModel {
     }
 }
 pub type mjModel = _mjModel;
-impl _mjtWarning {
-    pub const mjWARN_INERTIA: _mjtWarning = _mjtWarning(0);
-}
-impl _mjtWarning {
-    pub const mjWARN_CONTACTFULL: _mjtWarning = _mjtWarning(1);
-}
-impl _mjtWarning {
-    pub const mjWARN_CNSTRFULL: _mjtWarning = _mjtWarning(2);
-}
-impl _mjtWarning {
-    pub const mjWARN_VGEOMFULL: _mjtWarning = _mjtWarning(3);
-}
-impl _mjtWarning {
-    pub const mjWARN_BADQPOS: _mjtWarning = _mjtWarning(4);
-}
-impl _mjtWarning {
-    pub const mjWARN_BADQVEL: _mjtWarning = _mjtWarning(5);
-}
-impl _mjtWarning {
-    pub const mjWARN_BADQACC: _mjtWarning = _mjtWarning(6);
-}
-impl _mjtWarning {
-    pub const mjWARN_BADCTRL: _mjtWarning = _mjtWarning(7);
-}
-impl _mjtWarning {
-    pub const mjNWARNING: _mjtWarning = _mjtWarning(8);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtWarning(pub u32);
+pub enum _mjtWarning {
+    mjWARN_INERTIA = 0,
+    mjWARN_CONTACTFULL = 1,
+    mjWARN_CNSTRFULL = 2,
+    mjWARN_VGEOMFULL = 3,
+    mjWARN_BADQPOS = 4,
+    mjWARN_BADQVEL = 5,
+    mjWARN_BADQACC = 6,
+    mjWARN_BADCTRL = 7,
+    mjNWARNING = 8,
+}
 pub use self::_mjtWarning as mjtWarning;
-impl _mjtTimer {
-    pub const mjTIMER_STEP: _mjtTimer = _mjtTimer(0);
-}
-impl _mjtTimer {
-    pub const mjTIMER_FORWARD: _mjtTimer = _mjtTimer(1);
-}
-impl _mjtTimer {
-    pub const mjTIMER_INVERSE: _mjtTimer = _mjtTimer(2);
-}
-impl _mjtTimer {
-    pub const mjTIMER_POSITION: _mjtTimer = _mjtTimer(3);
-}
-impl _mjtTimer {
-    pub const mjTIMER_VELOCITY: _mjtTimer = _mjtTimer(4);
-}
-impl _mjtTimer {
-    pub const mjTIMER_ACTUATION: _mjtTimer = _mjtTimer(5);
-}
-impl _mjtTimer {
-    pub const mjTIMER_ACCELERATION: _mjtTimer = _mjtTimer(6);
-}
-impl _mjtTimer {
-    pub const mjTIMER_CONSTRAINT: _mjtTimer = _mjtTimer(7);
-}
-impl _mjtTimer {
-    pub const mjTIMER_POS_KINEMATICS: _mjtTimer = _mjtTimer(8);
-}
-impl _mjtTimer {
-    pub const mjTIMER_POS_INERTIA: _mjtTimer = _mjtTimer(9);
-}
-impl _mjtTimer {
-    pub const mjTIMER_POS_COLLISION: _mjtTimer = _mjtTimer(10);
-}
-impl _mjtTimer {
-    pub const mjTIMER_POS_MAKE: _mjtTimer = _mjtTimer(11);
-}
-impl _mjtTimer {
-    pub const mjTIMER_POS_PROJECT: _mjtTimer = _mjtTimer(12);
-}
-impl _mjtTimer {
-    pub const mjNTIMER: _mjtTimer = _mjtTimer(13);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtTimer(pub u32);
+pub enum _mjtTimer {
+    mjTIMER_STEP = 0,
+    mjTIMER_FORWARD = 1,
+    mjTIMER_INVERSE = 2,
+    mjTIMER_POSITION = 3,
+    mjTIMER_VELOCITY = 4,
+    mjTIMER_ACTUATION = 5,
+    mjTIMER_ACCELERATION = 6,
+    mjTIMER_CONSTRAINT = 7,
+    mjTIMER_POS_KINEMATICS = 8,
+    mjTIMER_POS_INERTIA = 9,
+    mjTIMER_POS_COLLISION = 10,
+    mjTIMER_POS_MAKE = 11,
+    mjTIMER_POS_PROJECT = 12,
+    mjNTIMER = 13,
+}
 pub use self::_mjtTimer as mjtTimer;
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -8138,34 +7862,49 @@ impl _mjtCatBit {
 impl _mjtCatBit {
     pub const mjCAT_ALL: _mjtCatBit = _mjtCatBit(7);
 }
+impl ::std::ops::BitOr<_mjtCatBit> for _mjtCatBit {
+    type Output = Self;
+
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        _mjtCatBit(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for _mjtCatBit {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: _mjtCatBit) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<_mjtCatBit> for _mjtCatBit {
+    type Output = Self;
+
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        _mjtCatBit(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for _mjtCatBit {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: _mjtCatBit) {
+        self.0 &= rhs.0;
+    }
+}
 #[repr(transparent)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct _mjtCatBit(pub u32);
 pub use self::_mjtCatBit as mjtCatBit;
-impl _mjtMouse {
-    pub const mjMOUSE_NONE: _mjtMouse = _mjtMouse(0);
-}
-impl _mjtMouse {
-    pub const mjMOUSE_ROTATE_V: _mjtMouse = _mjtMouse(1);
-}
-impl _mjtMouse {
-    pub const mjMOUSE_ROTATE_H: _mjtMouse = _mjtMouse(2);
-}
-impl _mjtMouse {
-    pub const mjMOUSE_MOVE_V: _mjtMouse = _mjtMouse(3);
-}
-impl _mjtMouse {
-    pub const mjMOUSE_MOVE_H: _mjtMouse = _mjtMouse(4);
-}
-impl _mjtMouse {
-    pub const mjMOUSE_ZOOM: _mjtMouse = _mjtMouse(5);
-}
-impl _mjtMouse {
-    pub const mjMOUSE_SELECT: _mjtMouse = _mjtMouse(6);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtMouse(pub u32);
+pub enum _mjtMouse {
+    mjMOUSE_NONE = 0,
+    mjMOUSE_ROTATE_V = 1,
+    mjMOUSE_ROTATE_H = 2,
+    mjMOUSE_MOVE_V = 3,
+    mjMOUSE_MOVE_H = 4,
+    mjMOUSE_ZOOM = 5,
+    mjMOUSE_SELECT = 6,
+}
 pub use self::_mjtMouse as mjtMouse;
 impl _mjtPertBit {
     pub const mjPERT_TRANSLATE: _mjtPertBit = _mjtPertBit(1);
@@ -8173,222 +7912,130 @@ impl _mjtPertBit {
 impl _mjtPertBit {
     pub const mjPERT_ROTATE: _mjtPertBit = _mjtPertBit(2);
 }
+impl ::std::ops::BitOr<_mjtPertBit> for _mjtPertBit {
+    type Output = Self;
+
+    #[inline]
+    fn bitor(self, other: Self) -> Self {
+        _mjtPertBit(self.0 | other.0)
+    }
+}
+impl ::std::ops::BitOrAssign for _mjtPertBit {
+    #[inline]
+    fn bitor_assign(&mut self, rhs: _mjtPertBit) {
+        self.0 |= rhs.0;
+    }
+}
+impl ::std::ops::BitAnd<_mjtPertBit> for _mjtPertBit {
+    type Output = Self;
+
+    #[inline]
+    fn bitand(self, other: Self) -> Self {
+        _mjtPertBit(self.0 & other.0)
+    }
+}
+impl ::std::ops::BitAndAssign for _mjtPertBit {
+    #[inline]
+    fn bitand_assign(&mut self, rhs: _mjtPertBit) {
+        self.0 &= rhs.0;
+    }
+}
 #[repr(transparent)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub struct _mjtPertBit(pub u32);
 pub use self::_mjtPertBit as mjtPertBit;
-impl _mjtCamera {
-    pub const mjCAMERA_FREE: _mjtCamera = _mjtCamera(0);
-}
-impl _mjtCamera {
-    pub const mjCAMERA_TRACKING: _mjtCamera = _mjtCamera(1);
-}
-impl _mjtCamera {
-    pub const mjCAMERA_FIXED: _mjtCamera = _mjtCamera(2);
-}
-impl _mjtCamera {
-    pub const mjCAMERA_USER: _mjtCamera = _mjtCamera(3);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtCamera(pub u32);
+pub enum _mjtCamera {
+    mjCAMERA_FREE = 0,
+    mjCAMERA_TRACKING = 1,
+    mjCAMERA_FIXED = 2,
+    mjCAMERA_USER = 3,
+}
 pub use self::_mjtCamera as mjtCamera;
-impl _mjtLabel {
-    pub const mjLABEL_NONE: _mjtLabel = _mjtLabel(0);
-}
-impl _mjtLabel {
-    pub const mjLABEL_BODY: _mjtLabel = _mjtLabel(1);
-}
-impl _mjtLabel {
-    pub const mjLABEL_JOINT: _mjtLabel = _mjtLabel(2);
-}
-impl _mjtLabel {
-    pub const mjLABEL_GEOM: _mjtLabel = _mjtLabel(3);
-}
-impl _mjtLabel {
-    pub const mjLABEL_SITE: _mjtLabel = _mjtLabel(4);
-}
-impl _mjtLabel {
-    pub const mjLABEL_CAMERA: _mjtLabel = _mjtLabel(5);
-}
-impl _mjtLabel {
-    pub const mjLABEL_LIGHT: _mjtLabel = _mjtLabel(6);
-}
-impl _mjtLabel {
-    pub const mjLABEL_TENDON: _mjtLabel = _mjtLabel(7);
-}
-impl _mjtLabel {
-    pub const mjLABEL_ACTUATOR: _mjtLabel = _mjtLabel(8);
-}
-impl _mjtLabel {
-    pub const mjLABEL_CONSTRAINT: _mjtLabel = _mjtLabel(9);
-}
-impl _mjtLabel {
-    pub const mjLABEL_SKIN: _mjtLabel = _mjtLabel(10);
-}
-impl _mjtLabel {
-    pub const mjLABEL_SELECTION: _mjtLabel = _mjtLabel(11);
-}
-impl _mjtLabel {
-    pub const mjLABEL_SELPNT: _mjtLabel = _mjtLabel(12);
-}
-impl _mjtLabel {
-    pub const mjLABEL_CONTACTFORCE: _mjtLabel = _mjtLabel(13);
-}
-impl _mjtLabel {
-    pub const mjNLABEL: _mjtLabel = _mjtLabel(14);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtLabel(pub u32);
+pub enum _mjtLabel {
+    mjLABEL_NONE = 0,
+    mjLABEL_BODY = 1,
+    mjLABEL_JOINT = 2,
+    mjLABEL_GEOM = 3,
+    mjLABEL_SITE = 4,
+    mjLABEL_CAMERA = 5,
+    mjLABEL_LIGHT = 6,
+    mjLABEL_TENDON = 7,
+    mjLABEL_ACTUATOR = 8,
+    mjLABEL_CONSTRAINT = 9,
+    mjLABEL_SKIN = 10,
+    mjLABEL_SELECTION = 11,
+    mjLABEL_SELPNT = 12,
+    mjLABEL_CONTACTFORCE = 13,
+    mjNLABEL = 14,
+}
 pub use self::_mjtLabel as mjtLabel;
-impl _mjtFrame {
-    pub const mjFRAME_NONE: _mjtFrame = _mjtFrame(0);
-}
-impl _mjtFrame {
-    pub const mjFRAME_BODY: _mjtFrame = _mjtFrame(1);
-}
-impl _mjtFrame {
-    pub const mjFRAME_GEOM: _mjtFrame = _mjtFrame(2);
-}
-impl _mjtFrame {
-    pub const mjFRAME_SITE: _mjtFrame = _mjtFrame(3);
-}
-impl _mjtFrame {
-    pub const mjFRAME_CAMERA: _mjtFrame = _mjtFrame(4);
-}
-impl _mjtFrame {
-    pub const mjFRAME_LIGHT: _mjtFrame = _mjtFrame(5);
-}
-impl _mjtFrame {
-    pub const mjFRAME_WORLD: _mjtFrame = _mjtFrame(6);
-}
-impl _mjtFrame {
-    pub const mjNFRAME: _mjtFrame = _mjtFrame(7);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtFrame(pub u32);
+pub enum _mjtFrame {
+    mjFRAME_NONE = 0,
+    mjFRAME_BODY = 1,
+    mjFRAME_GEOM = 2,
+    mjFRAME_SITE = 3,
+    mjFRAME_CAMERA = 4,
+    mjFRAME_LIGHT = 5,
+    mjFRAME_WORLD = 6,
+    mjNFRAME = 7,
+}
 pub use self::_mjtFrame as mjtFrame;
-impl _mjtVisFlag {
-    pub const mjVIS_CONVEXHULL: _mjtVisFlag = _mjtVisFlag(0);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_TEXTURE: _mjtVisFlag = _mjtVisFlag(1);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_JOINT: _mjtVisFlag = _mjtVisFlag(2);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_ACTUATOR: _mjtVisFlag = _mjtVisFlag(3);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_CAMERA: _mjtVisFlag = _mjtVisFlag(4);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_LIGHT: _mjtVisFlag = _mjtVisFlag(5);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_TENDON: _mjtVisFlag = _mjtVisFlag(6);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_RANGEFINDER: _mjtVisFlag = _mjtVisFlag(7);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_CONSTRAINT: _mjtVisFlag = _mjtVisFlag(8);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_INERTIA: _mjtVisFlag = _mjtVisFlag(9);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_SCLINERTIA: _mjtVisFlag = _mjtVisFlag(10);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_PERTFORCE: _mjtVisFlag = _mjtVisFlag(11);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_PERTOBJ: _mjtVisFlag = _mjtVisFlag(12);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_CONTACTPOINT: _mjtVisFlag = _mjtVisFlag(13);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_CONTACTFORCE: _mjtVisFlag = _mjtVisFlag(14);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_CONTACTSPLIT: _mjtVisFlag = _mjtVisFlag(15);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_TRANSPARENT: _mjtVisFlag = _mjtVisFlag(16);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_AUTOCONNECT: _mjtVisFlag = _mjtVisFlag(17);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_COM: _mjtVisFlag = _mjtVisFlag(18);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_SELECT: _mjtVisFlag = _mjtVisFlag(19);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_STATIC: _mjtVisFlag = _mjtVisFlag(20);
-}
-impl _mjtVisFlag {
-    pub const mjVIS_SKIN: _mjtVisFlag = _mjtVisFlag(21);
-}
-impl _mjtVisFlag {
-    pub const mjNVISFLAG: _mjtVisFlag = _mjtVisFlag(22);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtVisFlag(pub u32);
+pub enum _mjtVisFlag {
+    mjVIS_CONVEXHULL = 0,
+    mjVIS_TEXTURE = 1,
+    mjVIS_JOINT = 2,
+    mjVIS_ACTUATOR = 3,
+    mjVIS_CAMERA = 4,
+    mjVIS_LIGHT = 5,
+    mjVIS_TENDON = 6,
+    mjVIS_RANGEFINDER = 7,
+    mjVIS_CONSTRAINT = 8,
+    mjVIS_INERTIA = 9,
+    mjVIS_SCLINERTIA = 10,
+    mjVIS_PERTFORCE = 11,
+    mjVIS_PERTOBJ = 12,
+    mjVIS_CONTACTPOINT = 13,
+    mjVIS_CONTACTFORCE = 14,
+    mjVIS_CONTACTSPLIT = 15,
+    mjVIS_TRANSPARENT = 16,
+    mjVIS_AUTOCONNECT = 17,
+    mjVIS_COM = 18,
+    mjVIS_SELECT = 19,
+    mjVIS_STATIC = 20,
+    mjVIS_SKIN = 21,
+    mjNVISFLAG = 22,
+}
 pub use self::_mjtVisFlag as mjtVisFlag;
-impl _mjtRndFlag {
-    pub const mjRND_SHADOW: _mjtRndFlag = _mjtRndFlag(0);
-}
-impl _mjtRndFlag {
-    pub const mjRND_WIREFRAME: _mjtRndFlag = _mjtRndFlag(1);
-}
-impl _mjtRndFlag {
-    pub const mjRND_REFLECTION: _mjtRndFlag = _mjtRndFlag(2);
-}
-impl _mjtRndFlag {
-    pub const mjRND_ADDITIVE: _mjtRndFlag = _mjtRndFlag(3);
-}
-impl _mjtRndFlag {
-    pub const mjRND_SKYBOX: _mjtRndFlag = _mjtRndFlag(4);
-}
-impl _mjtRndFlag {
-    pub const mjRND_FOG: _mjtRndFlag = _mjtRndFlag(5);
-}
-impl _mjtRndFlag {
-    pub const mjRND_HAZE: _mjtRndFlag = _mjtRndFlag(6);
-}
-impl _mjtRndFlag {
-    pub const mjRND_SEGMENT: _mjtRndFlag = _mjtRndFlag(7);
-}
-impl _mjtRndFlag {
-    pub const mjRND_IDCOLOR: _mjtRndFlag = _mjtRndFlag(8);
-}
-impl _mjtRndFlag {
-    pub const mjNRNDFLAG: _mjtRndFlag = _mjtRndFlag(9);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtRndFlag(pub u32);
+pub enum _mjtRndFlag {
+    mjRND_SHADOW = 0,
+    mjRND_WIREFRAME = 1,
+    mjRND_REFLECTION = 2,
+    mjRND_ADDITIVE = 3,
+    mjRND_SKYBOX = 4,
+    mjRND_FOG = 5,
+    mjRND_HAZE = 6,
+    mjRND_SEGMENT = 7,
+    mjRND_IDCOLOR = 8,
+    mjNRNDFLAG = 9,
+}
 pub use self::_mjtRndFlag as mjtRndFlag;
-impl _mjtStereo {
-    pub const mjSTEREO_NONE: _mjtStereo = _mjtStereo(0);
-}
-impl _mjtStereo {
-    pub const mjSTEREO_QUADBUFFERED: _mjtStereo = _mjtStereo(1);
-}
-impl _mjtStereo {
-    pub const mjSTEREO_SIDEBYSIDE: _mjtStereo = _mjtStereo(2);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtStereo(pub u32);
+pub enum _mjtStereo {
+    mjSTEREO_NONE = 0,
+    mjSTEREO_QUADBUFFERED = 1,
+    mjSTEREO_SIDEBYSIDE = 2,
+}
 pub use self::_mjtStereo as mjtStereo;
 #[repr(C)]
 #[derive(Debug, Default, Copy, Clone)]
@@ -9880,66 +9527,40 @@ impl Default for _mjvFigure {
     }
 }
 pub type mjvFigure = _mjvFigure;
-impl _mjtGridPos {
-    pub const mjGRID_TOPLEFT: _mjtGridPos = _mjtGridPos(0);
-}
-impl _mjtGridPos {
-    pub const mjGRID_TOPRIGHT: _mjtGridPos = _mjtGridPos(1);
-}
-impl _mjtGridPos {
-    pub const mjGRID_BOTTOMLEFT: _mjtGridPos = _mjtGridPos(2);
-}
-impl _mjtGridPos {
-    pub const mjGRID_BOTTOMRIGHT: _mjtGridPos = _mjtGridPos(3);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtGridPos(pub u32);
+pub enum _mjtGridPos {
+    mjGRID_TOPLEFT = 0,
+    mjGRID_TOPRIGHT = 1,
+    mjGRID_BOTTOMLEFT = 2,
+    mjGRID_BOTTOMRIGHT = 3,
+}
 pub use self::_mjtGridPos as mjtGridPos;
-impl _mjtFramebuffer {
-    pub const mjFB_WINDOW: _mjtFramebuffer = _mjtFramebuffer(0);
-}
-impl _mjtFramebuffer {
-    pub const mjFB_OFFSCREEN: _mjtFramebuffer = _mjtFramebuffer(1);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtFramebuffer(pub u32);
+pub enum _mjtFramebuffer {
+    mjFB_WINDOW = 0,
+    mjFB_OFFSCREEN = 1,
+}
 pub use self::_mjtFramebuffer as mjtFramebuffer;
-impl _mjtFontScale {
-    pub const mjFONTSCALE_50: _mjtFontScale = _mjtFontScale(50);
-}
-impl _mjtFontScale {
-    pub const mjFONTSCALE_100: _mjtFontScale = _mjtFontScale(100);
-}
-impl _mjtFontScale {
-    pub const mjFONTSCALE_150: _mjtFontScale = _mjtFontScale(150);
-}
-impl _mjtFontScale {
-    pub const mjFONTSCALE_200: _mjtFontScale = _mjtFontScale(200);
-}
-impl _mjtFontScale {
-    pub const mjFONTSCALE_250: _mjtFontScale = _mjtFontScale(250);
-}
-impl _mjtFontScale {
-    pub const mjFONTSCALE_300: _mjtFontScale = _mjtFontScale(300);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtFontScale(pub u32);
+pub enum _mjtFontScale {
+    mjFONTSCALE_50 = 50,
+    mjFONTSCALE_100 = 100,
+    mjFONTSCALE_150 = 150,
+    mjFONTSCALE_200 = 200,
+    mjFONTSCALE_250 = 250,
+    mjFONTSCALE_300 = 300,
+}
 pub use self::_mjtFontScale as mjtFontScale;
-impl _mjtFont {
-    pub const mjFONT_NORMAL: _mjtFont = _mjtFont(0);
-}
-impl _mjtFont {
-    pub const mjFONT_SHADOW: _mjtFont = _mjtFont(1);
-}
-impl _mjtFont {
-    pub const mjFONT_BIG: _mjtFont = _mjtFont(2);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtFont(pub u32);
+pub enum _mjtFont {
+    mjFONT_NORMAL = 0,
+    mjFONT_SHADOW = 1,
+    mjFONT_BIG = 2,
+}
 pub use self::_mjtFont as mjtFont;
 #[repr(C)]
 #[derive(Debug, Default, Copy, Clone)]
@@ -10744,95 +10365,46 @@ impl Default for _mjrContext {
     }
 }
 pub type mjrContext = _mjrContext;
-impl _mjtButton {
-    pub const mjBUTTON_NONE: _mjtButton = _mjtButton(0);
-}
-impl _mjtButton {
-    pub const mjBUTTON_LEFT: _mjtButton = _mjtButton(1);
-}
-impl _mjtButton {
-    pub const mjBUTTON_RIGHT: _mjtButton = _mjtButton(2);
-}
-impl _mjtButton {
-    pub const mjBUTTON_MIDDLE: _mjtButton = _mjtButton(3);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtButton(pub u32);
+pub enum _mjtButton {
+    mjBUTTON_NONE = 0,
+    mjBUTTON_LEFT = 1,
+    mjBUTTON_RIGHT = 2,
+    mjBUTTON_MIDDLE = 3,
+}
 pub use self::_mjtButton as mjtButton;
-impl _mjtEvent {
-    pub const mjEVENT_NONE: _mjtEvent = _mjtEvent(0);
-}
-impl _mjtEvent {
-    pub const mjEVENT_MOVE: _mjtEvent = _mjtEvent(1);
-}
-impl _mjtEvent {
-    pub const mjEVENT_PRESS: _mjtEvent = _mjtEvent(2);
-}
-impl _mjtEvent {
-    pub const mjEVENT_RELEASE: _mjtEvent = _mjtEvent(3);
-}
-impl _mjtEvent {
-    pub const mjEVENT_SCROLL: _mjtEvent = _mjtEvent(4);
-}
-impl _mjtEvent {
-    pub const mjEVENT_KEY: _mjtEvent = _mjtEvent(5);
-}
-impl _mjtEvent {
-    pub const mjEVENT_RESIZE: _mjtEvent = _mjtEvent(6);
-}
-#[repr(transparent)]
+#[repr(u32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtEvent(pub u32);
+pub enum _mjtEvent {
+    mjEVENT_NONE = 0,
+    mjEVENT_MOVE = 1,
+    mjEVENT_PRESS = 2,
+    mjEVENT_RELEASE = 3,
+    mjEVENT_SCROLL = 4,
+    mjEVENT_KEY = 5,
+    mjEVENT_RESIZE = 6,
+}
 pub use self::_mjtEvent as mjtEvent;
-impl _mjtItem {
-    pub const mjITEM_END: _mjtItem = _mjtItem(-2);
-}
-impl _mjtItem {
-    pub const mjITEM_SECTION: _mjtItem = _mjtItem(-1);
-}
-impl _mjtItem {
-    pub const mjITEM_SEPARATOR: _mjtItem = _mjtItem(0);
-}
-impl _mjtItem {
-    pub const mjITEM_STATIC: _mjtItem = _mjtItem(1);
-}
-impl _mjtItem {
-    pub const mjITEM_BUTTON: _mjtItem = _mjtItem(2);
-}
-impl _mjtItem {
-    pub const mjITEM_CHECKINT: _mjtItem = _mjtItem(3);
-}
-impl _mjtItem {
-    pub const mjITEM_CHECKBYTE: _mjtItem = _mjtItem(4);
-}
-impl _mjtItem {
-    pub const mjITEM_RADIO: _mjtItem = _mjtItem(5);
-}
-impl _mjtItem {
-    pub const mjITEM_SELECT: _mjtItem = _mjtItem(6);
-}
-impl _mjtItem {
-    pub const mjITEM_SLIDERINT: _mjtItem = _mjtItem(7);
-}
-impl _mjtItem {
-    pub const mjITEM_SLIDERNUM: _mjtItem = _mjtItem(8);
-}
-impl _mjtItem {
-    pub const mjITEM_EDITINT: _mjtItem = _mjtItem(9);
-}
-impl _mjtItem {
-    pub const mjITEM_EDITNUM: _mjtItem = _mjtItem(10);
-}
-impl _mjtItem {
-    pub const mjITEM_EDITTXT: _mjtItem = _mjtItem(11);
-}
-impl _mjtItem {
-    pub const mjNITEM: _mjtItem = _mjtItem(12);
-}
-#[repr(transparent)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-pub struct _mjtItem(pub i32);
+pub enum _mjtItem {
+    mjITEM_END = -2,
+    mjITEM_SECTION = -1,
+    mjITEM_SEPARATOR = 0,
+    mjITEM_STATIC = 1,
+    mjITEM_BUTTON = 2,
+    mjITEM_CHECKINT = 3,
+    mjITEM_CHECKBYTE = 4,
+    mjITEM_RADIO = 5,
+    mjITEM_SELECT = 6,
+    mjITEM_SLIDERINT = 7,
+    mjITEM_SLIDERNUM = 8,
+    mjITEM_EDITINT = 9,
+    mjITEM_EDITNUM = 10,
+    mjITEM_EDITTXT = 11,
+    mjNITEM = 12,
+}
 pub use self::_mjtItem as mjtItem;
 pub type mjfItemEnable = ::std::option::Option<
     unsafe extern "C" fn(
