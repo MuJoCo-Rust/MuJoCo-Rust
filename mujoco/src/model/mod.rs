@@ -2,11 +2,18 @@ use std::ffi::CString;
 
 use crate::VFS;
 
+pub use crate::re_exports::ObjType;
+use mujoco_sys::no_render::mjModel;
+use std::ffi::CStr;
+
+type Id = u16;
+
 /// A MuJoCo model
 #[derive(Debug)]
 pub struct Model {
-    pub(crate) ptr: *mut mujoco_sys::no_render::mjModel,
+    pub(crate) ptr: *mut mjModel,
 }
+// Creation, serialization, and deserialization funcs
 impl Model {
     /// Loads a `Model` from a path to an XML file
     ///
@@ -101,6 +108,49 @@ impl Model {
         buf
     }
 }
+// Accessors
+impl Model {
+    /// Gets the low level [`mjModel`] that the `Model` uses under the hood
+    pub fn ptr(&self) -> *mut mjModel {
+        self.ptr
+    }
+
+    /// Converts `name` to an id that serves as an offset into the arrays in the
+    /// underlying [`mjModel`]
+    pub fn name_to_id(&self, obj_type: ObjType, name: &str) -> Option<Id> {
+        self.cstr_name_to_id(obj_type, &CString::new(name).unwrap())
+    }
+
+    pub fn cstr_name_to_id(&self, obj_type: ObjType, name: &CStr) -> Option<Id> {
+        let result = unsafe {
+            mujoco_sys::no_render::mj_name2id(
+                self.ptr,
+                obj_type as std::os::raw::c_int,
+                name.as_ptr(),
+            )
+        };
+        if result == -1 {
+            None
+        } else {
+            Some(result as Id)
+        }
+    }
+
+    pub fn id_to_name(&self, obj_type: ObjType, id: Id) -> Option<&str> {
+        let cstr = unsafe {
+            mujoco_sys::no_render::mj_id2name(
+                self.ptr,
+                obj_type as std::os::raw::c_int,
+                id as std::os::raw::c_int,
+            )
+        };
+        if cstr == std::ptr::null() {
+            return None;
+        }
+        let cstr = unsafe { CStr::from_ptr(cstr) };
+        Some(cstr.to_str().expect("Expected valid unicode for the name!"))
+    }
+}
 impl Drop for Model {
     fn drop(&mut self) {
         unsafe { mujoco_sys::no_render::mj_deleteModel(self.ptr) };
@@ -116,11 +166,7 @@ impl Clone for Model {
 }
 
 /// Helper function for loading a model from xml
-fn from_xml_helper(
-    model_ptr: *mut mujoco_sys::no_render::_mjModel,
-    err_buf: Vec<u8>,
-) -> Result<Model, String> {
-    debug_assert_ne!(model_ptr, std::ptr::null_mut());
+fn from_xml_helper(model_ptr: *mut mjModel, err_buf: Vec<u8>) -> Result<Model, String> {
     debug_assert_ne!(err_buf.len(), 0);
     let err_str = crate::helpers::convert_err_buf(err_buf);
 
@@ -138,14 +184,26 @@ fn from_xml_helper(
 
 #[cfg(test)]
 mod tests {
-    use super::Model;
+    use super::*;
     use crate::activate;
     use crate::tests::{SIMPLE_XML, SIMPLE_XML_PATH};
+
+    fn check_expected_ids(m: &Model) {
+        assert_eq!(m.name_to_id(ObjType::BODY, "world").unwrap(), 0);
+        assert_eq!(m.name_to_id(ObjType::LIGHT, "light0").unwrap(), 0);
+        assert_eq!(m.name_to_id(ObjType::GEOM, "geom0").unwrap(), 0);
+        assert_eq!(m.name_to_id(ObjType::BODY, "body1").unwrap(), 1);
+        assert_eq!(m.name_to_id(ObjType::JOINT, "joint0").unwrap(), 0);
+        assert_eq!(m.name_to_id(ObjType::GEOM, "geom1").unwrap(), 1);
+    }
 
     #[test]
     fn from_xml() {
         activate();
-        Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
+        let m = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
+
+        // Check expected values
+        check_expected_ids(&m);
     }
 
     #[test]
@@ -182,5 +240,40 @@ mod tests {
         let m_original = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
         let m_cloned = m_original.clone();
         assert_eq!(m_original.to_vec(), m_cloned.to_vec());
+    }
+
+    #[test]
+    fn name_to_id() {
+        activate();
+        let m = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
+
+        // Check expected values
+        check_expected_ids(&m);
+
+        // Check that non-existent names give `None`
+        assert_eq!(m.name_to_id(ObjType::BODY, "asdf"), None);
+        assert_eq!(m.name_to_id(ObjType::BODY, "body0"), None);
+        assert_eq!(m.name_to_id(ObjType::GEOM, "geom2"), None);
+        assert_eq!(m.name_to_id(ObjType::CAMERA, "cam"), None);
+    }
+
+    #[test]
+    fn id_to_name() {
+        activate();
+        let m = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
+
+        // Check expected values
+        assert_eq!(m.id_to_name(ObjType::BODY, 0).unwrap(), "world");
+        assert_eq!(m.id_to_name(ObjType::LIGHT, 0).unwrap(), "light0");
+        assert_eq!(m.id_to_name(ObjType::GEOM, 0).unwrap(), "geom0");
+        assert_eq!(m.id_to_name(ObjType::BODY, 1).unwrap(), "body1");
+        assert_eq!(m.id_to_name(ObjType::JOINT, 0).unwrap(), "joint0");
+        assert_eq!(m.id_to_name(ObjType::GEOM, 1).unwrap(), "geom1");
+
+        // Check that non-existent ids give `None`
+        assert_eq!(m.id_to_name(ObjType::BODY, 2), None);
+        assert_eq!(m.id_to_name(ObjType::LIGHT, 1), None);
+        assert_eq!(m.id_to_name(ObjType::GEOM, 2), None);
+        assert_eq!(m.id_to_name(ObjType::CAMERA, 0), None);
     }
 }

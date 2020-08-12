@@ -2,6 +2,7 @@
 //! simulator commonly used for robotics and machine learning.
 
 pub mod model;
+mod re_exports;
 pub mod state;
 mod vfs;
 
@@ -95,11 +96,11 @@ mod tests {
         pub(crate) static ref SIMPLE_XML: &'static str = r#"
             <mujoco>
                 <worldbody>
-                    <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
-                    <geom type="plane" size="1 1 0.1" rgba=".9 0 0 1"/>
-                    <body pos="0 0 1">
-                        <joint type="free"/>
-                        <geom type="box" size=".1 .2 .3" rgba="0 .9 0 1"/>
+                    <light name="light0" diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
+                    <geom name="geom0" type="plane" size="1 1 0.1" rgba=".9 0 0 1"/>
+                    <body name="body1" pos="0 0 1">
+                        <joint name="joint0" type="free"/>
+                        <geom name="geom1" type="box" size=".1 .2 .3" rgba="0 .9 0 1"/>
                     </body>
                 </worldbody>
             </mujoco>"#;
