@@ -1,4 +1,6 @@
 # MuJoCo-rs
+NOTE: Project Abandoned
+
 MuJoCo bindings for Rust
 
 ## Installation requirements
