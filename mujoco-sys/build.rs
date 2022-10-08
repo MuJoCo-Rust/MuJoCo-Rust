@@ -7,17 +7,13 @@ fn main() {
     if option_env!("DOCS_RS").is_none() {
         let mj_path = dirs::home_dir()
             .expect("Could not locate home directory!")
-            .join(".mujoco")
-            .join("mujoco200");
-        let mj_bin = mj_path.join("bin");
+            .join(".local")
+            .join("mujoco");
+        let mj_bin = mj_path.join("lib");
 
         // Compile-time link location
         println!("cargo:rustc-link-search={}", mj_bin.to_str().unwrap());
-        if cfg!(feature = "mj-render") {
-            println!("cargo:rustc-link-lib=dylib=mujoco200");
-        } else {
-            println!("cargo:rustc-link-lib=dylib=mujoco200nogl");
-        }
+        println!("cargo:rustc-link-lib=dylib=mujoco");
 
         for p in read_dir(mj_bin).unwrap() {
             let p = p.unwrap().path();

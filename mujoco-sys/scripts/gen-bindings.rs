@@ -3,8 +3,8 @@
 //!
 //! ```cargo
 //! [dependencies]
-//! bindgen = "0.54.1"
-//! dirs = "3.0"
+//! bindgen = "*"
+//! dirs = "*"
 //! ```
 
 extern crate bindgen;
@@ -25,7 +25,7 @@ impl ParseCallbacks for EnumPrefixStripper {
         _variant_value: EnumVariantValue,
     ) -> Option<String> {
         let enum_name = _enum_name?;
-        if !enum_name.starts_with("enum _mjt") {
+        if !enum_name.starts_with("enum ") {
             return None;
         }
         let enum_name = enum_name.strip_prefix("enum ").unwrap();
@@ -65,12 +65,12 @@ impl ParseCallbacks for EnumPrefixStripper {
 fn main() {
     let mj_path = dirs::home_dir()
         .expect("Could not locate home directory!")
-        .join(".mujoco")
-        .join("mujoco200");
+        .join(".local")
+        .join("mujoco");
     let mj_include = mj_path.join("include");
 
     let builder_helper = |b: bindgen::Builder, whitelist: &str| -> bindgen::Builder {
-        b.header_contents("wrapper.h", r#"#include "mujoco.h""#)
+        b.header_contents("wrapper.h", r#"#include "mujoco/mujoco.h""#)
             .parse_callbacks(Box::new(bindgen::CargoCallbacks))
             .whitelist_type(whitelist)
             .whitelist_function(whitelist)
@@ -88,6 +88,7 @@ fn main() {
 
     // Whitelist all mj* except mjr*
     let no_render_binds = builder_helper(bindgen::Builder::default(), r"(?i)mj[^r].*")
+        .opaque_type("mjVFS")
         .generate()
         .expect("Unable to generate bindings");
     // Whitelist only mjr*. Need to also include _mjr* due to non-recursive
