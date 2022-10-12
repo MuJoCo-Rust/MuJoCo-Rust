@@ -88,7 +88,6 @@ fn main() {
 
     // Whitelist all mj* except mjr*
     let no_render_binds = builder_helper(bindgen::Builder::default(), r"(?i)mj[^r].*")
-        .opaque_type("mjVFS")
         .generate()
         .expect("Unable to generate bindings");
     // Whitelist only mjr*. Need to also include _mjr* due to non-recursive

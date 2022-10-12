@@ -1,8 +1,5 @@
 # MuJoCo-rs
-NOTE: Project Abandoned
-
 MuJoCo bindings for Rust
 
 ## Installation requirements
-MuJoCo-rs requires MuJoCo to be installed. You can download it [here](https://www.roboti.us/index.html).
-Make sure that it is unzipped and installed at `~/.mujoco/mujoco200`.
+These bindings require that MuJoCo be installed before building.  The build system assumes that MuJoCo is installed into /usr/local, but any installation directory can be used, as long as either the environment variable MUJOCO_DIR or MUJOCO_PREFIX is set to the root of the installation.

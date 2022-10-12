@@ -43,28 +43,29 @@ fn activate() {
 }
 
 fn load_model() -> *mut mjModel {
-    use std::mem::MaybeUninit;
-    let mut vfs: mjVFS = {
-        let mut vfs_uninit: MaybeUninit<mjVFS> = MaybeUninit::uninit();
+    //use std::mem::MaybeUninit;
+    let mut vfs: Box<mjVFS> = {
+        let mut vfs_uninit: Box<mjVFS> = unsafe { Box::from_raw( std::alloc::alloc(std::alloc::Layout::new::<mujoco_sys::no_render::mjVFS_>()) as *mut _ ) };//MaybeUninit<mjVFS> = MaybeUninit::uninit();
         unsafe {
-            mj_defaultVFS(vfs_uninit.as_mut_ptr());
-            vfs_uninit.assume_init()
+            mj_defaultVFS(&mut *vfs_uninit);
+            vfs_uninit
         }
     };
     {
         assert_eq!(
             unsafe {
                 mj_makeEmptyFileVFS(
-                    &mut vfs,
+                    &mut *vfs,
                     XML_NAME.as_ptr(),
                     XML.len() as std::os::raw::c_int,
                 )
             },
             0
         );
-        let file_idx = unsafe { mj_findFileVFS(&vfs, XML_NAME.as_ptr()) };
+        let file_idx = unsafe { mj_findFileVFS(&*vfs, XML_NAME.as_ptr()) };
         assert_ne!(file_idx, -1);
-        let file_buf: *mut std::os::raw::c_void = vfs.filedata.get(file_idx as usize);
+        let file_buf: *mut std::os::raw::c_void = vfs.filedata
+        [file_idx as usize];
         let file_buf = file_buf as *mut std::os::raw::c_uchar;
         unsafe { std::ptr::copy_nonoverlapping(XML.as_ptr(), file_buf, XML.len()) };
     }
@@ -74,7 +75,7 @@ fn load_model() -> *mut mjModel {
         let mut err: Box<[std::os::raw::c_uchar; 1000]> = Box::new([b'\0'; 1000]);
         model = mj_loadXML(
             XML_NAME.as_ptr(),
-            &vfs,
+            &*vfs,
             err.as_mut_ptr() as *mut std::os::raw::c_char,
             1000,
         );
@@ -84,7 +85,7 @@ fn load_model() -> *mut mjModel {
             "Error when loading XML: {}",
             String::from_utf8(err.to_vec()).unwrap()
         );
-        mj_deleteVFS(&mut vfs);
+        mj_deleteVFS(&mut *vfs);
     }
     model
 }

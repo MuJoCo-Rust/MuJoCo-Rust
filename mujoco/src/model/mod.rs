@@ -13,7 +13,6 @@ type Id = u16;
 pub struct Model {
     pub(crate) ptr: *mut mjModel,
 }
-use std::io::Read;
 // Creation, serialization, and deserialization funcs
 impl Model {
     /// Loads a `Model` from a path to an XML file
@@ -28,12 +27,6 @@ impl Model {
         let filepath =
             CString::new(path.to_str().expect("Could not convert `path` to unicode!"))
                 .expect("`path` had an unexpected null byte in its interior!");
-
-        let mut f = std::fs::File::open(&path).expect("no file found");
-        let metadata = std::fs::metadata(&path).expect("unable to read metadata");
-        let mut buffer = vec![0; metadata.len() as usize];
-        f.read(&mut buffer).expect("buffer overflow");
-        println!("{:?}",buffer);
 
         let mut err_buf = Vec::new();
         // TODO: Would it be safe to just allocate w/o init?
@@ -61,24 +54,20 @@ impl Model {
         VFS.with(|rcell| {
             let mut vfs = rcell.borrow_mut();
             vfs.add_file(filename, xml.as_bytes()).unwrap();
-            //println!("VFS File:{:?}",vfs.get_file(filename).unwrap());
 
             let mut err_buf = Vec::new();
             // TODO: Would it be safe to just allocate w/o init?
             err_buf.resize(1000, b'\0'); // Allocate and initialize 1000 null bytes
 
-            println!("Attempt to load model");
             let model_ptr = unsafe {
                 mujoco_sys::no_render::mj_loadXML(
                     filename_cstr.as_ptr(),
-                    vfs.vfs.mem as *mut _,
+                    &*vfs.vfs,
                     err_buf.as_mut_ptr() as *mut std::os::raw::c_char,
                     err_buf.len() as std::os::raw::c_int,
                 )
             };
-            println!("Got a model?");
             vfs.delete_file(filename);
-            println!("Deleted file?");
             from_xml_helper(model_ptr, err_buf)
         })
     }
@@ -96,7 +85,7 @@ impl Model {
             vfs.add_file(filename, bytes).unwrap();
 
             let model_ptr = unsafe {
-                mujoco_sys::no_render::mj_loadModel(filename_cstr.as_ptr(), vfs.vfs.mem)
+                mujoco_sys::no_render::mj_loadModel(filename_cstr.as_ptr(), &*vfs.vfs)
             };
             vfs.delete_file(filename);
             Self { ptr: model_ptr }
@@ -206,10 +195,11 @@ mod tests {
         assert_eq!(m.name_to_id(ObjType::BODY, "body1").unwrap(), 1);
         assert_eq!(m.name_to_id(ObjType::JOINT, "joint0").unwrap(), 0);
         assert_eq!(m.name_to_id(ObjType::GEOM, "geom1").unwrap(), 1);
+        assert_eq!(unsafe{*(*m.ptr()).geom_size.offset(3)},0.1);
     }
 
     #[test]
-    fn from_xml_base() {
+    fn from_xml() {
         activate();
         let m = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
 
@@ -220,16 +210,16 @@ mod tests {
     #[test]
     fn from_xml_str() {
         activate();
-        println!("{}",*SIMPLE_XML);
         let model_xml = Model::from_xml_str(*SIMPLE_XML).unwrap();
-        let model_file = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
-        assert_eq!(model_xml.to_vec(), model_file.to_vec());
+        /*let model_file = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
+        assert_eq!(model_xml.to_vec(), model_file.to_vec());*/
+        check_expected_ids(&model_xml);
     }
 
     #[test]
     fn from_bytes() {
         activate();
-        let model_xml = Model::from_xml_str(*SIMPLE_XML).unwrap();
+        let model_xml = Model::from_xml/*_str*/(&*SIMPLE_XML_PATH).unwrap();
         let model_xml_bytes = model_xml.to_vec();
         let model_from_bytes = Model::from_bytes(&model_xml_bytes);
         assert_eq!(model_from_bytes.to_vec(), model_xml_bytes);
@@ -244,14 +234,6 @@ mod tests {
             mujoco_sys::no_render::mj_sizeModel(m.ptr)
         } as usize);
         println!("Serialized data: {:?}", serialized);
-    }
-
-    #[test]
-    fn clone() {
-        activate();
-        let m_original = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
-        let m_cloned = m_original.clone();
-        assert_eq!(m_original.to_vec(), m_cloned.to_vec());
     }
 
     #[test]

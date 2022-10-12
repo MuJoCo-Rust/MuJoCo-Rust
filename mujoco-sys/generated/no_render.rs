@@ -659,7 +659,7 @@ impl Default for mjVFS_ {
         }
     }
 }
-pub type mjVFS = [u64; 253001usize];
+pub type mjVFS = mjVFS_;
 #[repr(C)]
 #[derive(Debug, Default, Copy, Clone)]
 pub struct mjOption_ {
