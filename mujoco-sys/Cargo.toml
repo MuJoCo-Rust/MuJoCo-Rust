@@ -1,16 +1,16 @@
 [package]
 name = "mujoco-sys"
-version = "0.0.1"
-authors = ["Ryan Butler <thebutlah@gmail.com>"]
+version = "0.0.2"
+authors = ["Ryan Butler <thebutlah@gmail.com>", "Aaron Law <aaronlaw1215@gmail.com>"]
 edition = "2018"
 description = "FFI bindings to MuJoCo"
 readme = "../README.md"
-repository = "https://github.com/TheButlah/mujoco-rs/"
-homepage = "https://github.com/TheButlah/mujoco-rs/"
+repository = "https://github.com/aaronlaw1215/MuJoCo-Rust"
+homepage = "https://github.com/aaronlaw1215/MuJoCo-Rust"
 license = "MIT"
 keywords = ["ffi", "bindgen", "bindings", "mujoco"]
 categories = ["external-ffi-bindings", "science::robotics", "simulation"]
-links = "mujoco200"
+links = "mujoco"
 
 [features]
 default = ["mj-render"]
