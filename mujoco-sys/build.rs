@@ -3,8 +3,14 @@ use std::path::PathBuf;
 use std::env;
 use std::str::FromStr;
 
+include!(concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/scripts/generator.rs"
+));
+
 fn main() {
     println!("cargo:rerun-if-changed=wrapper.h");
+    generate();
 
     let (prefix, dyl_ext, default_install) = match env::var("CARGO_CFG_UNIX")
     {
