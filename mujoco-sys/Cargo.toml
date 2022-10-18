@@ -20,7 +20,7 @@ default = ["mj-render"]
 mj-render = []
 
 [build-dependencies]
-bindgen = "*"
+bindgen = "0.61.0"
 dirs = "3.0"
 
 [dev-dependencies]
