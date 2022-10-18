@@ -1,7 +1,7 @@
 [package]
 name = "mujoco"
-version = "0.0.1"
-authors = ["Ryan Butler <thebutlah@gmail.com>"]
+version = "0.0.2"
+authors = ["Ryan Butler <thebutlah@gmail.com>", "Aaron Law <aaronlaw1215@gmail.com>"]
 edition = "2018"
 description = "MuJoCo bindings for Rust"
 readme = "../README.md"
