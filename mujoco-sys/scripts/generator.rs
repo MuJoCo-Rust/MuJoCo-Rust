@@ -60,12 +60,12 @@ fn generate() {
     let builder_helper = |b: bindgen::Builder, whitelist: &str| -> bindgen::Builder {
         b.header_contents("wrapper.h", r#"#include "mujoco/mujoco.h""#)
             .parse_callbacks(Box::new(bindgen::CargoCallbacks))
-            .whitelist_type(whitelist)
-            .whitelist_function(whitelist)
-            .whitelist_var(whitelist)
+            .allowlist_type(whitelist)
+            .allowlist_function(whitelist)
+            .allowlist_var(whitelist)
             .rustified_enum(r"_?mjt.+")
             .bitfield_enum(r"_?mjt.+Bit")
-            .default_enum_style(EnumVariation::NewType { is_bitfield: false })
+            .default_enum_style(EnumVariation::NewType { is_bitfield: false, is_global: false })
             .parse_callbacks(Box::new(EnumPrefixStripper{}))
             // MuJoCo mjtWhatevers enums are not actually used in the API, so this will
             // make re-exposing for the user API easier
@@ -80,7 +80,7 @@ fn generate() {
         .expect("Unable to generate bindings");
     // Whitelist only mjr*. Need to also include _mjr* due to non-recursive
     let render_binds = builder_helper(bindgen::Builder::default(), r"_?mjr.*")
-        .whitelist_recursively(false)
+        .allowlist_recursively(false)
         .raw_line("pub use crate::no_render::*;")
         .generate()
         .expect("Unable to generate bindings");
