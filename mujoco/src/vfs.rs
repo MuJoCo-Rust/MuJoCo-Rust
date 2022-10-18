@@ -1,5 +1,5 @@
-pub use mujoco_sys::no_render::mjMAXVFS as MAX_FILES;
-pub use mujoco_sys::no_render::mjMAXVFSNAME as MAX_FILENAME_LEN;
+pub use mujoco_rs_sys::no_render::mjMAXVFS as MAX_FILES;
+pub use mujoco_rs_sys::no_render::mjMAXVFSNAME as MAX_FILENAME_LEN;
 
 use std::ffi::{CStr, CString};
 
@@ -17,7 +17,7 @@ impl std::fmt::Display for AddError {
 impl std::error::Error for AddError {}
 
 pub struct Vfs {
-    pub(crate) vfs: Box<mujoco_sys::no_render::mjVFS_>,
+    pub(crate) vfs: Box<mujoco_rs_sys::no_render::mjVFS_>,
 }
 impl Vfs {
     /// Initializes a new empty `Vfs`
@@ -28,7 +28,7 @@ impl Vfs {
     /// Looks up the index of the file from the filename
     fn get_idx(&self, filename: &CStr) -> Option<usize> {
         let idx = unsafe {
-            mujoco_sys::no_render::mj_findFileVFS(&*self.vfs, filename.as_ptr())
+            mujoco_rs_sys::no_render::mj_findFileVFS(&*self.vfs, filename.as_ptr())
         };
         if idx == -1 {
             None
@@ -51,7 +51,7 @@ impl Vfs {
     pub fn delete_file(&mut self, filename: &str) -> bool {
         let c_str = CString::new(filename).unwrap();
         let result = unsafe {
-            mujoco_sys::no_render::mj_deleteFileVFS(&mut *self.vfs, c_str.as_ptr())
+            mujoco_rs_sys::no_render::mj_deleteFileVFS(&mut *self.vfs, c_str.as_ptr())
         };
         debug_assert!(result == 0 || result == -1);
         result != -1
@@ -66,7 +66,7 @@ impl Vfs {
         let filename = CString::new(filename).unwrap();
         let file_size = contents.len();
         let add_errno = unsafe {
-            mujoco_sys::no_render::mj_makeEmptyFileVFS(
+            mujoco_rs_sys::no_render::mj_makeEmptyFileVFS(
                 &mut *self.vfs,
                 filename.as_ptr(),
                 file_size as std::os::raw::c_int,
@@ -90,15 +90,15 @@ impl Vfs {
 impl Default for Vfs {
     fn default() -> Self {
         let mut result = Self {
-            vfs: unsafe { Box::from_raw(std::alloc::alloc(std::alloc::Layout::new::<mujoco_sys::no_render::mjVFS_>()) as *mut _) },//Default::default(),
+            vfs: unsafe { Box::from_raw(std::alloc::alloc(std::alloc::Layout::new::<mujoco_rs_sys::no_render::mjVFS_>()) as *mut _) },//Default::default(),
         };
-        unsafe { mujoco_sys::no_render::mj_defaultVFS(&mut *result.vfs) };
+        unsafe { mujoco_rs_sys::no_render::mj_defaultVFS(&mut *result.vfs) };
         result
     }
 }
 impl Drop for Vfs {
     fn drop(&mut self) {
-        unsafe { mujoco_sys::no_render::mj_deleteVFS(&mut *self.vfs) }
+        unsafe { mujoco_rs_sys::no_render::mj_deleteVFS(&mut *self.vfs) }
     }
 }
 

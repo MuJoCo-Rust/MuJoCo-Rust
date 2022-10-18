@@ -54,7 +54,7 @@ pub fn activate() {
 /// Note that this globally deactivates MuJoCo, so make sure sure that other
 /// code doesn't expect it to be activated when this is called
 pub fn deactivate() {
-    unsafe { mujoco_sys::mj_deactivate() }
+    unsafe { mujoco_rs_sys::mj_deactivate() }
 }
 
 /// Activates MuJoCo from a the key's filepath
@@ -74,7 +74,7 @@ pub fn activate_from_cstr(key_loc: impl AsRef<CStr>) {
     let key_loc = key_loc.as_ref();
     let activate_result;
     unsafe {
-        activate_result = mujoco_sys::mj_activate(key_loc.as_ptr());
+        activate_result = mujoco_rs_sys::mj_activate(key_loc.as_ptr());
     }
     if activate_result != 1 {
         unreachable!("If activation fails, mujoco calls error handler and terminates.")

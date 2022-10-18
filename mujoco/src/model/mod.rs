@@ -3,7 +3,7 @@ use std::ffi::CString;
 use crate::VFS;
 
 pub use crate::re_exports::ObjType;
-use mujoco_sys::no_render::mjModel;
+use mujoco_rs_sys::no_render::mjModel;
 use std::ffi::CStr;
 
 type Id = u16;
@@ -33,7 +33,7 @@ impl Model {
         err_buf.resize(1000, b'\0'); // Allocate and initialize 1000 null bytes
 
         let model_ptr = unsafe {
-            mujoco_sys::no_render::mj_loadXML(
+            mujoco_rs_sys::no_render::mj_loadXML(
                 filepath.as_ptr(),
                 std::ptr::null(),
                 err_buf.as_mut_ptr() as *mut std::os::raw::c_char,
@@ -60,7 +60,7 @@ impl Model {
             err_buf.resize(1000, b'\0'); // Allocate and initialize 1000 null bytes
 
             let model_ptr = unsafe {
-                mujoco_sys::no_render::mj_loadXML(
+                mujoco_rs_sys::no_render::mj_loadXML(
                     filename_cstr.as_ptr(),
                     &*vfs.vfs,
                     err_buf.as_mut_ptr() as *mut std::os::raw::c_char,
@@ -85,7 +85,7 @@ impl Model {
             vfs.add_file(filename, bytes).unwrap();
 
             let model_ptr = unsafe {
-                mujoco_sys::no_render::mj_loadModel(filename_cstr.as_ptr(), &*vfs.vfs)
+                mujoco_rs_sys::no_render::mj_loadModel(filename_cstr.as_ptr(), &*vfs.vfs)
             };
             vfs.delete_file(filename);
             Self { ptr: model_ptr }
@@ -94,10 +94,10 @@ impl Model {
 
     /// Serializes the `Model` into a binary vector
     pub fn to_vec(&self) -> Vec<u8> {
-        let nbytes = unsafe { mujoco_sys::no_render::mj_sizeModel(self.ptr) };
+        let nbytes = unsafe { mujoco_rs_sys::no_render::mj_sizeModel(self.ptr) };
         let mut buf: Vec<u8> = Vec::with_capacity(nbytes as usize);
         unsafe {
-            mujoco_sys::no_render::mj_saveModel(
+            mujoco_rs_sys::no_render::mj_saveModel(
                 self.ptr,
                 std::ptr::null(),
                 buf.as_mut_ptr() as *mut std::os::raw::c_void,
@@ -123,7 +123,7 @@ impl Model {
 
     pub fn cstr_name_to_id(&self, obj_type: ObjType, name: &CStr) -> Option<Id> {
         let result = unsafe {
-            mujoco_sys::no_render::mj_name2id(
+            mujoco_rs_sys::no_render::mj_name2id(
                 self.ptr,
                 obj_type as std::os::raw::c_int,
                 name.as_ptr(),
@@ -138,7 +138,7 @@ impl Model {
 
     pub fn id_to_name(&self, obj_type: ObjType, id: Id) -> Option<&str> {
         let cstr = unsafe {
-            mujoco_sys::no_render::mj_id2name(
+            mujoco_rs_sys::no_render::mj_id2name(
                 self.ptr,
                 obj_type as std::os::raw::c_int,
                 id as std::os::raw::c_int,
@@ -153,13 +153,13 @@ impl Model {
 }
 impl Drop for Model {
     fn drop(&mut self) {
-        unsafe { mujoco_sys::no_render::mj_deleteModel(self.ptr) };
+        unsafe { mujoco_rs_sys::no_render::mj_deleteModel(self.ptr) };
     }
 }
 impl Clone for Model {
     fn clone(&self) -> Self {
         let ptr = unsafe {
-            mujoco_sys::no_render::mj_copyModel(std::ptr::null_mut(), self.ptr)
+            mujoco_rs_sys::no_render::mj_copyModel(std::ptr::null_mut(), self.ptr)
         };
         Self { ptr }
     }
@@ -231,7 +231,7 @@ mod tests {
         let m = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
         let serialized = m.to_vec();
         assert_eq!(serialized.len(), unsafe {
-            mujoco_sys::no_render::mj_sizeModel(m.ptr)
+            mujoco_rs_sys::no_render::mj_sizeModel(m.ptr)
         } as usize);
         println!("Serialized data: {:?}", serialized);
     }

@@ -4,7 +4,7 @@ use crate::Model;
 /// the C API
 #[derive(Debug)]
 pub struct State<'a> {
-    ptr: *mut mujoco_sys::no_render::mjData,
+    ptr: *mut mujoco_rs_sys::no_render::mjData,
     // TODO: Perhaps this shouldn't be here, and we should manage cloning and resetting
     // in the `Sim` struct
     model: &'a Model,
@@ -12,21 +12,21 @@ pub struct State<'a> {
 impl<'a> State<'a> {
     /// Creates a new `State` from a [`Model`]
     pub fn new(model: &'a crate::Model) -> Self {
-        let ptr = unsafe { mujoco_sys::no_render::mj_makeData(model.ptr) };
+        let ptr = unsafe { mujoco_rs_sys::no_render::mj_makeData(model.ptr) };
         assert_ne!(ptr, std::ptr::null_mut());
         // Do one forward step to initialize all fields
         // TODO: Double check this is necessary
-        unsafe { mujoco_sys::no_render::mj_forward(model.ptr, ptr) };
+        unsafe { mujoco_rs_sys::no_render::mj_forward(model.ptr, ptr) };
         Self { ptr, model }
     }
 
     /// Resets the state to the default values
     // TODO: What does default values mean in this context?
     pub fn reset(&mut self) {
-        unsafe { mujoco_sys::no_render::mj_resetData(self.model.ptr, self.ptr) }
+        unsafe { mujoco_rs_sys::no_render::mj_resetData(self.model.ptr, self.ptr) }
         // Do one forward step to initialize all fields
         // TODO: Double check this is necessary
-        unsafe { mujoco_sys::no_render::mj_forward(self.model.ptr, self.ptr) };
+        unsafe { mujoco_rs_sys::no_render::mj_forward(self.model.ptr, self.ptr) };
     }
 
     /// Gets the model associated with this `State`
@@ -36,13 +36,13 @@ impl<'a> State<'a> {
 }
 impl<'a> Drop for State<'a> {
     fn drop(&mut self) {
-        unsafe { mujoco_sys::no_render::mj_deleteData(self.ptr) }
+        unsafe { mujoco_rs_sys::no_render::mj_deleteData(self.ptr) }
     }
 }
 impl<'a> Clone for State<'a> {
     fn clone(&self) -> Self {
         let ptr = unsafe {
-            mujoco_sys::no_render::mj_copyData(
+            mujoco_rs_sys::no_render::mj_copyData(
                 std::ptr::null_mut(),
                 self.model.ptr,
                 self.ptr,

@@ -16,7 +16,7 @@ default = ["mj-render"]
 
 # If activated, will require MuJoCo's OpenGL dependencies to be installed, and
 # enabes the `mjr_*` functions.
-mj-render = ["mujoco-sys/mj-render"]
+mj-render = ["mujoco-rs-sys/mj-render"]
 
 [dependencies]
 mujoco-rs-sys = { version = "0.0.2", path = "../mujoco-sys", default-features = false }
