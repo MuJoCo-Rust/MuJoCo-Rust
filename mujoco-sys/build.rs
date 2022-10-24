@@ -5,6 +5,16 @@ use std::str::FromStr;
 
 include!(concat!(env!("CARGO_MANIFEST_DIR"), "/scripts/generator.rs"));
 
+fn get_output_path() -> PathBuf {
+    let manifest_dir_string = env::var("CARGO_MANIFEST_DIR").unwrap();
+    let build_type = env::var("PROFILE").unwrap();
+    let path = Path::new(&manifest_dir_string)
+        .join("..")
+        .join("target")
+        .join(build_type);
+    return PathBuf::from(path);
+}
+
 fn main() {
     println!("cargo:rerun-if-changed=wrapper.h");
     generate();
@@ -35,16 +45,37 @@ fn main() {
         };
         let mj_root = PathBuf::from_str(&mj_root).expect("Unable to get path");
 
-        let mj_lib = match env::var("CARGO_CFG_WINDOWS") {
-            Ok(_) => mj_root.join("bin"),
-            _ => mj_root.join("lib"),
+        let mj_lib_windows = mj_root.join("bin");
+        let mj_lib_posix = mj_root.join("lib");
+
+        let path = match env::var("CARGO_CFG_WINDOWS") {
+            Ok(_) => mj_lib_windows.join(&lib_file),
+            _ => mj_lib_posix.join(&lib_file),
         };
 
-        let path = mj_lib.join(&lib_file);
-
-        // Compile-time link location
-        println!("cargo:rustc-link-search={}", mj_lib.to_str().unwrap());
         println!("cargo:rustc-link-lib=dylib=mujoco");
+        println!(
+            "cargo:rustc-link-search=dylib={}",
+            mj_lib_posix.to_str().unwrap()
+        );
+
+        // Copy mujoco.dll to target directory on Windows targets
+        match env::var("CARGO_CFG_WINDOWS") {
+            Ok(_) => {
+                let target_dir = get_output_path();
+                let src = Path::join(
+                    &env::current_dir().unwrap(),
+                    mj_lib_windows.join("mujoco.dll"),
+                );
+
+                let dest = Path::join(Path::new(&target_dir), Path::new("mujoco.dll"));
+
+                eprintln!("{:?} \t\t\t {:?}", src, dest);
+
+                std::fs::copy(src, dest).unwrap();
+            }
+            _ => {}
+        }
 
         match env::var("CARGO_CFG_WINDOWS") {
             Ok(_) => {
