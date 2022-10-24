@@ -37,7 +37,7 @@ impl ParseCallbacks for EnumPrefixStripper {
             }
         }
 
-        let first_underscore = original.find("_")?;
+        let first_underscore = original.find('_')?;
         let suffix = &original[first_underscore + 1..];
         if suffix.starts_with(char::is_numeric) {
             panic!(
@@ -56,7 +56,7 @@ fn generate() {
             if env::var("MUJOCO_DIR").is_ok() {
                 PathBuf::from(env::var("MUJOCO_DIR").unwrap().as_str())
             } else if env::var("MUJOCO_PREFIX").is_ok() {
-                PathBuf::from(env::var("MUJOCO_DIR").unwrap().as_str())
+                PathBuf::from(env::var("MUJOCO_PREFIX").unwrap().as_str())
             } else {
                 PathBuf::from("C:\\Program Files\\MuJoCo")
             }
