@@ -72,6 +72,7 @@ impl Vfs {
                 file_size as std::os::raw::c_int,
             )
         };
+
         match add_errno {
             1 => Err(AddError::VfsFull),
             2 => Err(AddError::RepeatedName),
@@ -80,9 +81,11 @@ impl Vfs {
         }?;
 
         let idx = self.get_idx(&filename).unwrap();
+
         let start_ptr = self.vfs.filedata[idx] as *mut u8;
         let file_slice =
             unsafe { std::slice::from_raw_parts_mut(start_ptr, file_size) };
+
         file_slice.copy_from_slice(contents);
         Ok(())
     }
@@ -90,7 +93,11 @@ impl Vfs {
 impl Default for Vfs {
     fn default() -> Self {
         let mut result = Self {
-            vfs: unsafe { Box::from_raw(std::alloc::alloc(std::alloc::Layout::new::<mujoco_rs_sys::no_render::mjVFS_>()) as *mut _) },//Default::default(),
+            vfs: unsafe {
+                Box::from_raw(std::alloc::alloc(std::alloc::Layout::new::<
+                    mujoco_rs_sys::no_render::mjVFS_,
+                >()) as *mut _)
+            }, // Default::default(),
         };
         unsafe { mujoco_rs_sys::no_render::mj_defaultVFS(&mut *result.vfs) };
         result
