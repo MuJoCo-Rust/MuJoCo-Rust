@@ -30,7 +30,7 @@ impl Model {
 
         let mut err_buf = Vec::new();
         // TODO: Would it be safe to just allocate w/o init?
-        err_buf.resize(1024, b'\0'); // Allocate and initialize 1024 null bytes
+        err_buf.resize(1000, b'\0'); // Allocate and initialize 1000 null bytes
 
         let model_ptr = unsafe {
             mujoco_rs_sys::no_render::mj_loadXML(
@@ -57,7 +57,7 @@ impl Model {
 
             let mut err_buf = Vec::new();
             // TODO: Would it be safe to just allocate w/o init?
-            err_buf.resize(1024, b'\0'); // Allocate and initialize 1024 null bytes
+            err_buf.resize(1000, b'\0'); // Allocate and initialize 1000 null bytes
 
             let model_ptr = unsafe {
                 mujoco_rs_sys::no_render::mj_loadXML(
@@ -83,11 +83,7 @@ impl Model {
         VFS.with(|rcell| {
             let mut vfs = rcell.borrow_mut();
 
-            // Allocate with null bytes
-            // (&*vfs.vfs).resize(1024, b'\0');
-
             vfs.add_file(filename, bytes).unwrap();
-
             let model_ptr = unsafe {
                 mujoco_rs_sys::no_render::mj_loadModel(
                     filename_cstr.as_ptr(),
