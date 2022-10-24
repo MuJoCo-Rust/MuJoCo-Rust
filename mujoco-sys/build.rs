@@ -40,12 +40,22 @@ fn main() {
         println!("cargo:rustc-link-search={}", mj_lib.to_str().unwrap());
         println!("cargo:rustc-link-lib=dylib=mujoco");
 
-        println!(
-            "cargo:rerun-if-changed={}",
-            std::fs::read_link(mj_lib.join(&lib_file).to_str().unwrap())
-                .expect(format!("Expected symbolic link to {}", &lib_file).as_str())
-                .to_str()
-                .unwrap()
-        );
+        match env::var("CARGO_CFG_WINDOWS") {
+            Ok(_) => {
+                println!("cargo:rustc-link-lib=dylib=opengl32");
+                println!("cargo:rustc-link-lib=dylib=glu32");
+            }
+            _ => {
+                println!(
+                    "cargo:rerun-if-changed={}",
+                    std::fs::read_link(mj_lib.join(&lib_file).to_str().unwrap())
+                        .expect(
+                            format!("Expected symbolic link to {}", &lib_file).as_str()
+                        )
+                        .to_str()
+                        .unwrap()
+                );
+            }
+        }
     }
 }
