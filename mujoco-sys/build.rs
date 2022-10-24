@@ -1,4 +1,5 @@
 use std::env;
+use std::path::Path;
 use std::path::PathBuf;
 use std::str::FromStr;
 
@@ -34,7 +35,12 @@ fn main() {
         };
         let mj_root = PathBuf::from_str(&mj_root).expect("Unable to get path");
 
-        let mj_lib = mj_root.join("lib");
+        let mj_lib = match env::var("CARGO_CFG_WINDOWS") {
+            Ok(_) => mj_root.join("bin"),
+            _ => mj_root.join("lib"),
+        };
+
+        let path = mj_lib.join(&lib_file);
 
         // Compile-time link location
         println!("cargo:rustc-link-search={}", mj_lib.to_str().unwrap());
@@ -42,13 +48,18 @@ fn main() {
 
         match env::var("CARGO_CFG_WINDOWS") {
             Ok(_) => {
-                println!("cargo:rustc-link-lib=dylib=opengl32");
-                println!("cargo:rustc-link-lib=dylib=glu32");
+                std::fs::read(path.to_str().unwrap())
+                    .expect(format!("Expected file at {}", &lib_file).as_str());
+
+                println!(
+                    "cargo:rerun-if-changed={}",
+                    Path::new(path.to_str().unwrap()).to_str().unwrap()
+                );
             }
             _ => {
                 println!(
                     "cargo:rerun-if-changed={}",
-                    std::fs::read_link(mj_lib.join(&lib_file).to_str().unwrap())
+                    std::fs::read_link(path.to_str().unwrap())
                         .expect(
                             format!("Expected symbolic link to {}", &lib_file).as_str()
                         )
