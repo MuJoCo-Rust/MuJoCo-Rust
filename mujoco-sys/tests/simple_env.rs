@@ -1,5 +1,6 @@
 use lazy_static::lazy_static;
-use mujoco_sys::*;
+use mujoco_rs_sys::*;
+// use mujoco_rs_sys::*;
 use std::ffi::{CStr, CString};
 
 const XML: &str = r#"
@@ -43,9 +44,13 @@ fn activate() {
 }
 
 fn load_model() -> *mut mjModel {
-    //use std::mem::MaybeUninit;
+    // use std::mem::MaybeUninit;
     let mut vfs: Box<mjVFS> = {
-        let mut vfs_uninit: Box<mjVFS> = unsafe { Box::from_raw( std::alloc::alloc(std::alloc::Layout::new::<mujoco_sys::no_render::mjVFS_>()) as *mut _ ) };//MaybeUninit<mjVFS> = MaybeUninit::uninit();
+        let mut vfs_uninit: Box<mjVFS> = unsafe {
+            Box::from_raw(std::alloc::alloc(std::alloc::Layout::new::<
+                mujoco_rs_sys::no_render::mjVFS_,
+            >()) as *mut _)
+        }; // MaybeUninit<mjVFS> = MaybeUninit::uninit();
         unsafe {
             mj_defaultVFS(&mut *vfs_uninit);
             vfs_uninit
@@ -64,8 +69,7 @@ fn load_model() -> *mut mjModel {
         );
         let file_idx = unsafe { mj_findFileVFS(&*vfs, XML_NAME.as_ptr()) };
         assert_ne!(file_idx, -1);
-        let file_buf: *mut std::os::raw::c_void = vfs.filedata
-        [file_idx as usize];
+        let file_buf: *mut std::os::raw::c_void = vfs.filedata[file_idx as usize];
         let file_buf = file_buf as *mut std::os::raw::c_uchar;
         unsafe { std::ptr::copy_nonoverlapping(XML.as_ptr(), file_buf, XML.len()) };
     }
