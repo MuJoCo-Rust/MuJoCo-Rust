@@ -82,10 +82,13 @@ impl Model {
         let filename_cstr = CString::new(filename).unwrap();
         VFS.with(|rcell| {
             let mut vfs = rcell.borrow_mut();
-            vfs.add_file(filename, bytes).unwrap();
 
+            vfs.add_file(filename, bytes).unwrap();
             let model_ptr = unsafe {
-                mujoco_rs_sys::no_render::mj_loadModel(filename_cstr.as_ptr(), &*vfs.vfs)
+                mujoco_rs_sys::no_render::mj_loadModel(
+                    filename_cstr.as_ptr(),
+                    &*vfs.vfs,
+                )
             };
             vfs.delete_file(filename);
             Self { ptr: model_ptr }
@@ -96,6 +99,7 @@ impl Model {
     pub fn to_vec(&self) -> Vec<u8> {
         let nbytes = unsafe { mujoco_rs_sys::no_render::mj_sizeModel(self.ptr) };
         let mut buf: Vec<u8> = Vec::with_capacity(nbytes as usize);
+        buf.resize(nbytes as usize, 0);
         unsafe {
             mujoco_rs_sys::no_render::mj_saveModel(
                 self.ptr,
@@ -195,7 +199,7 @@ mod tests {
         assert_eq!(m.name_to_id(ObjType::BODY, "body1").unwrap(), 1);
         assert_eq!(m.name_to_id(ObjType::JOINT, "joint0").unwrap(), 0);
         assert_eq!(m.name_to_id(ObjType::GEOM, "geom1").unwrap(), 1);
-        assert_eq!(unsafe{*(*m.ptr()).geom_size.offset(3)},0.1);
+        assert_eq!(unsafe { *(*m.ptr()).geom_size.offset(3) }, 0.1);
     }
 
     #[test]
@@ -211,8 +215,8 @@ mod tests {
     fn from_xml_str() {
         activate();
         let model_xml = Model::from_xml_str(*SIMPLE_XML).unwrap();
-        /*let model_file = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
-        assert_eq!(model_xml.to_vec(), model_file.to_vec());*/
+        // let model_file = Model::from_xml(&*SIMPLE_XML_PATH).unwrap();
+        // assert_eq!(model_xml.to_vec(), model_file.to_vec());
         check_expected_ids(&model_xml);
     }
 
