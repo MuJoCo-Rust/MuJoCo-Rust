@@ -12,7 +12,7 @@ fn get_output_path() -> PathBuf {
         .join("..")
         .join("target")
         .join(build_type);
-    return PathBuf::from(path);
+    path
 }
 
 fn main() {
@@ -60,27 +60,21 @@ fn main() {
         );
 
         // Copy mujoco.dll to target directory on Windows targets
-        match env::var("CARGO_CFG_WINDOWS") {
-            Ok(_) => {
-                let target_dir = get_output_path();
-                let src = Path::join(
-                    &env::current_dir().unwrap(),
-                    mj_lib_windows.join("mujoco.dll"),
-                );
+        if env::var("CARGO_CFG_WINDOWS").is_ok() {
+            let target_dir = get_output_path();
+            let src = Path::join(
+                &env::current_dir().unwrap(),
+                mj_lib_windows.join("mujoco.dll"),
+            );
 
-                let dest = Path::join(Path::new(&target_dir), Path::new("mujoco.dll"));
-
-                eprintln!("{:?} \t\t\t {:?}", src, dest);
-
-                std::fs::copy(src, dest).unwrap();
-            }
-            _ => {}
+            let dest = Path::join(Path::new(&target_dir), Path::new("mujoco.dll"));
+            std::fs::copy(src, dest).unwrap();
         }
 
         match env::var("CARGO_CFG_WINDOWS") {
             Ok(_) => {
                 std::fs::read(path.to_str().unwrap())
-                    .expect(format!("Expected file at {}", &lib_file).as_str());
+                    .unwrap_or_else(|_| panic!("Expected file at {}", &lib_file));
 
                 println!(
                     "cargo:rerun-if-changed={}",
@@ -91,9 +85,10 @@ fn main() {
                 println!(
                     "cargo:rerun-if-changed={}",
                     std::fs::read_link(path.to_str().unwrap())
-                        .expect(
-                            format!("Expected symbolic link to {}", &lib_file).as_str()
-                        )
+                        .unwrap_or_else(|_| panic!(
+                            "Expected symbolic link to {}",
+                            &lib_file
+                        ))
                         .to_str()
                         .unwrap()
                 );
