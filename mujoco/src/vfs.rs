@@ -39,6 +39,7 @@ impl Vfs {
     }
 
     /// Gets a file's contents from the `Vfs`
+    #[allow(dead_code)]
     pub fn get_file(&self, filename: &str) -> Option<&[u8]> {
         let idx = self.get_idx(&CString::new(filename).unwrap())?;
         let file_size = self.vfs.filesize[idx] as usize;
@@ -130,7 +131,7 @@ mod tests {
     #[test]
     fn delete_without_add() {
         let mut vfs = Vfs::new();
-        assert_eq!(vfs.delete_file("asdf"), false);
+        assert!(vfs.delete_file("asdf") == false);
     }
 
     #[test]
@@ -138,7 +139,7 @@ mod tests {
         let filename = "file";
         let mut vfs = Vfs::new();
         vfs.add_file(filename, "asdf".as_bytes()).unwrap();
-        assert_eq!(vfs.delete_file(filename), true);
+        assert!(vfs.delete_file(filename));
     }
 
     #[test]
@@ -147,6 +148,6 @@ mod tests {
         let mut vfs = Vfs::new();
         vfs.add_file(filename, "asdf".as_bytes()).unwrap();
         let second_add_result = vfs.add_file(filename, "asdf".as_bytes());
-        assert_eq!(second_add_result, Err(AddError::RepeatedName));
+        assert!(second_add_result == Err(AddError::RepeatedName));
     }
 }

@@ -19,6 +19,12 @@ fn main() {
     println!("cargo:rerun-if-changed=wrapper.h");
     generate();
 
+    let default_install_path = dirs::home_dir()
+        .expect("Could not locate home directory!")
+        .join(".local")
+        .join("mujoco");
+    let default_install_path = default_install_path.to_str().unwrap();
+
     let (prefix, dyl_ext, default_install) = match env::var("CARGO_CFG_UNIX") {
         Ok(_) => (
             "lib",
@@ -27,7 +33,7 @@ fn main() {
             } else {
                 "so"
             },
-            "/usr/local",
+            default_install_path,
         ),
         _ => match env::var("CARGO_CFG_WINDOWS") {
             Ok(_) => ("", "dll", "C:\\Program Files\\MuJoCo"),
@@ -71,28 +77,12 @@ fn main() {
             std::fs::copy(src, dest).unwrap();
         }
 
-        match env::var("CARGO_CFG_WINDOWS") {
-            Ok(_) => {
-                std::fs::read(path.to_str().unwrap())
-                    .unwrap_or_else(|_| panic!("Expected file at {}", &lib_file));
+        std::fs::read(path.to_str().unwrap())
+            .unwrap_or_else(|_| panic!("Expected file at {}", &lib_file));
 
-                println!(
-                    "cargo:rerun-if-changed={}",
-                    Path::new(path.to_str().unwrap()).to_str().unwrap()
-                );
-            }
-            _ => {
-                println!(
-                    "cargo:rerun-if-changed={}",
-                    std::fs::read_link(path.to_str().unwrap())
-                        .unwrap_or_else(|_| panic!(
-                            "Expected symbolic link to {}",
-                            &lib_file
-                        ))
-                        .to_str()
-                        .unwrap()
-                );
-            }
-        }
+        println!(
+            "cargo:rerun-if-changed={}",
+            Path::new(path.to_str().unwrap()).to_str().unwrap()
+        );
     }
 }

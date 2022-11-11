@@ -12,4 +12,4 @@ error_on_unformatted = true
 normalize_doc_attributes = true
 
 # Ignore generated files
-ignore =  ["**/*_generated.rs"]
+ignore = ["**/*_generated.rs"]
