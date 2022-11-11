@@ -12,12 +12,18 @@ fn get_output_path() -> PathBuf {
         .join("..")
         .join("target")
         .join(build_type);
-    return PathBuf::from(path);
+    path
 }
 
 fn main() {
     println!("cargo:rerun-if-changed=wrapper.h");
     generate();
+
+    let default_install_path = dirs::home_dir()
+        .expect("Could not locate home directory!")
+        .join(".local")
+        .join("mujoco");
+    let default_install_path = default_install_path.to_str().unwrap();
 
     let (prefix, dyl_ext, default_install) = match env::var("CARGO_CFG_UNIX") {
         Ok(_) => (
@@ -27,7 +33,7 @@ fn main() {
             } else {
                 "so"
             },
-            "/usr/local",
+            default_install_path,
         ),
         _ => match env::var("CARGO_CFG_WINDOWS") {
             Ok(_) => ("", "dll", "C:\\Program Files\\MuJoCo"),
@@ -60,44 +66,23 @@ fn main() {
         );
 
         // Copy mujoco.dll to target directory on Windows targets
-        match env::var("CARGO_CFG_WINDOWS") {
-            Ok(_) => {
-                let target_dir = get_output_path();
-                let src = Path::join(
-                    &env::current_dir().unwrap(),
-                    mj_lib_windows.join("mujoco.dll"),
-                );
+        if env::var("CARGO_CFG_WINDOWS").is_ok() {
+            let target_dir = get_output_path();
+            let src = Path::join(
+                &env::current_dir().unwrap(),
+                mj_lib_windows.join("mujoco.dll"),
+            );
 
-                let dest = Path::join(Path::new(&target_dir), Path::new("mujoco.dll"));
-
-                eprintln!("{:?} \t\t\t {:?}", src, dest);
-
-                std::fs::copy(src, dest).unwrap();
-            }
-            _ => {}
+            let dest = Path::join(Path::new(&target_dir), Path::new("mujoco.dll"));
+            std::fs::copy(src, dest).unwrap();
         }
 
-        match env::var("CARGO_CFG_WINDOWS") {
-            Ok(_) => {
-                std::fs::read(path.to_str().unwrap())
-                    .expect(format!("Expected file at {}", &lib_file).as_str());
+        std::fs::read(path.to_str().unwrap())
+            .unwrap_or_else(|_| panic!("Expected file at {}", &lib_file));
 
-                println!(
-                    "cargo:rerun-if-changed={}",
-                    Path::new(path.to_str().unwrap()).to_str().unwrap()
-                );
-            }
-            _ => {
-                println!(
-                    "cargo:rerun-if-changed={}",
-                    std::fs::read_link(path.to_str().unwrap())
-                        .expect(
-                            format!("Expected symbolic link to {}", &lib_file).as_str()
-                        )
-                        .to_str()
-                        .unwrap()
-                );
-            }
-        }
+        println!(
+            "cargo:rerun-if-changed={}",
+            Path::new(path.to_str().unwrap()).to_str().unwrap()
+        );
     }
 }

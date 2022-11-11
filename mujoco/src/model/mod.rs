@@ -98,7 +98,7 @@ impl Model {
     /// Serializes the `Model` into a binary vector
     pub fn to_vec(&self) -> Vec<u8> {
         let nbytes = unsafe { mujoco_rs_sys::no_render::mj_sizeModel(self.ptr) };
-        let mut buf: Vec<u8> = Vec::with_capacity(nbytes as usize);
+        let mut buf: Vec<u8> = vec![0; nbytes as usize];
         buf.resize(nbytes as usize, 0);
         unsafe {
             mujoco_rs_sys::no_render::mj_saveModel(
@@ -148,6 +148,7 @@ impl Model {
                 id as std::os::raw::c_int,
             )
         };
+        #[allow(clippy::cmp_null)]
         if cstr == std::ptr::null() {
             return None;
         }
@@ -177,7 +178,7 @@ fn from_xml_helper(model_ptr: *mut mjModel, err_buf: Vec<u8>) -> Result<Model, S
     if !err_str.is_empty() {
         return Err(err_str);
     }
-    if model_ptr == std::ptr::null_mut() {
+    if model_ptr.is_null() {
         unreachable!(
             "It shouldn't be possible to get a null pointer from mujoco \
                 without an error message!"
@@ -223,7 +224,7 @@ mod tests {
     #[test]
     fn from_bytes() {
         activate();
-        let model_xml = Model::from_xml/*_str*/(&*SIMPLE_XML_PATH).unwrap();
+        let model_xml = Model::from_xml(&*SIMPLE_XML_PATH).unwrap(); // _str
         let model_xml_bytes = model_xml.to_vec();
         let model_from_bytes = Model::from_bytes(&model_xml_bytes);
         assert_eq!(model_from_bytes.to_vec(), model_xml_bytes);
