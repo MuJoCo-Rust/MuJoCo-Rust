@@ -93,8 +93,7 @@ mod tests {
                 .expect("Could not resolve absolute path for package root!");
         pub(crate) static ref SIMPLE_XML_PATH: std::path::PathBuf =
             PKG_ROOT.join("tests").join("res").join("simple.xml");
-        pub(crate) static ref SIMPLE_XML: &'static str = 
-r#"<mujoco>
+        pub(crate) static ref SIMPLE_XML: &'static str = r#"<mujoco>
     <worldbody>
         <light name="light0" diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
         <geom name="geom0" type="plane" size="1 1 0.1" rgba=".9 0 0 1"/>
