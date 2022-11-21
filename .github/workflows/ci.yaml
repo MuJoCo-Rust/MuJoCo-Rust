@@ -42,6 +42,52 @@ jobs:
         with:
           command: test
 
+  build-on-windows:
+    name: Build On Windows
+    runs-on: windows-latest
+    env:
+      RUSTFLAGS: -Ctarget-feature=+crt-static
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-test-${{ hashFiles('**/Cargo.toml') }}
+        # - name: Install Rustup using win.rustup.rs
+        #   run: |
+        #     # Disable the download progress bar which can cause perf issues
+        #     $ProgressPreference = "SilentlyContinue"
+        #     Invoke-WebRequest https://win.rustup.rs/ -OutFile rustup-init.exe
+        #     .\rustup-init.exe -y --default-host=x86_64-pc-windows-msvc --default-toolchain=none
+        #     del rustup-init.exe
+        #     rustup target add ${{ matrix.target }}
+        #   shell: powershell
+        # - name: Add mingw32 to path for i686-gnu
+        #   run: |
+        #     echo "C:\msys64\mingw32\bin" >> $GITHUB_PATH
+        #   if: matrix.target == 'i686-pc-windows-gnu' && matrix.channel == 'nightly'
+        #   shell: bash
+        # - name: Add mingw64 to path for x86_64-gnu
+        #   run: echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
+        #   if: matrix.target == 'x86_64-pc-windows-gnu' && matrix.channel == 'nightly'
+        # shell: bash
+      - name: Install mujoco
+        run: |
+          $ProgressPreference = "SilentlyContinue"
+          Invoke-WebRequest https://github.com/deepmind/mujoco/releases/download/2.3.0/mujoco-2.3.0-windows-x86_64.zip -OutFile mujoco.zip
+          7z x -y mujoco.zip -o"C:\Program Files\MuJoCo" | Out-Null
+          del mujoco.zip
+      - name: Build and Test
+        shell: cmd
+        run: ci\build.bat
+
   # Run cargo clippy -- -D warnings
   clippy_check:
     name: Clippy
@@ -94,4 +140,4 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: fmt
-          args: --all -- --check
+          args: --all -- --check --config newline_style=Unix
