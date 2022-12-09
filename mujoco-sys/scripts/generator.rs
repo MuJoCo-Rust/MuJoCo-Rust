@@ -101,6 +101,7 @@ fn generate() {
 
     // Write the bindings to the `generated` directory.
     let out_path = PathBuf::from("generated");
+    _ = fs::create_dir(&out_path);
     no_render_binds
         .write_to_file(out_path.join("no_render.rs"))
         .expect("Couldn't write bindings!");
