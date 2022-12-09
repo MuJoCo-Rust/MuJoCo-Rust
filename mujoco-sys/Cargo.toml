@@ -1,7 +1,10 @@
 [package]
 name = "mujoco-rs-sys"
 version = "0.0.2"
-authors = ["Ryan Butler <thebutlah@gmail.com>", "Aaron Law <aaronlaw1215@gmail.com>"]
+authors = [
+    "Ryan Butler <thebutlah@gmail.com>",
+    "Aaron Law <aaronlaw1215@gmail.com>",
+]
 edition = "2018"
 description = "FFI bindings to MuJoCo"
 readme = "../README.md"
@@ -20,9 +23,9 @@ default = ["mj-render"]
 mj-render = []
 
 [build-dependencies]
-bindgen = "0.61.0"
-dirs = "3.0"
+bindgen = "0.63.0"
+dirs = "4.0"
 
 [dev-dependencies]
-dirs = "3.0"
+dirs = "4.0"
 lazy_static = "1.4.0"
