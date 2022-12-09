@@ -7,4 +7,3 @@ include!(concat!(
     env!("CARGO_MANIFEST_DIR"),
     "/generated/no_render.rs"
 ));
-

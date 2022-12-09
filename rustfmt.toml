@@ -1,6 +1,6 @@
 # consistent with python's black
 max_width = 88
-newline_style = "Native"
+newline_style = "Unix"
 use_try_shorthand = true
 
 # Nightly features
