@@ -62,7 +62,7 @@ fn main() {
 
         println!("cargo:rustc-link-lib=dylib=mujoco");
         println!(
-            "cargo:rustc-link-search=dylib={}",
+            "cargo:rustc-link-search={}",
             mj_lib_posix.to_str().unwrap()
         );
 
