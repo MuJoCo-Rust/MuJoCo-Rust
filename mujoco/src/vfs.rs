@@ -131,7 +131,7 @@ mod tests {
     #[test]
     fn delete_without_add() {
         let mut vfs = Vfs::new();
-        assert!(vfs.delete_file("asdf") == false);
+        assert!(!vfs.delete_file("asdf"));
     }
 
     #[test]
