@@ -19,6 +19,6 @@ default = ["mj-render"]
 mj-render = ["mujoco-rs-sys/mj-render"]
 
 [dependencies]
-mujoco-rs-sys = { version = "0.0.2", path = "../mujoco-sys", default-features = false }
+mujoco-rs-sys = { version = "0.0.3", path = "../mujoco-sys", default-features = false }
 dirs = "4.0"
 lazy_static = "1.4.0"
