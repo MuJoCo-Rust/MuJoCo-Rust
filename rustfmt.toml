@@ -1,6 +1,6 @@
 # consistent with python's black
 max_width = 88
-newline_style = "Native"
+newline_style = "Unix"
 use_try_shorthand = true
 
 # Nightly features
@@ -12,4 +12,4 @@ error_on_unformatted = true
 normalize_doc_attributes = true
 
 # Ignore generated files
-ignore = ["**/*_generated.rs"]
+ignore = ["**/generated/*"]

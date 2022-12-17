@@ -62,7 +62,7 @@ pub const mjKEY_F11: u32 = 300;
 pub const mjKEY_F12: u32 = 301;
 pub type mjtNum = f64;
 pub type mjtByte = ::std::os::raw::c_uchar;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtDisableBit_ {
     CONSTRAINT = 1,
@@ -81,7 +81,7 @@ pub enum mjtDisableBit_ {
     mjNDISABLE = 13,
 }
 pub use self::mjtDisableBit_ as mjtDisableBit;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtEnableBit_ {
     OVERRIDE = 1,
@@ -92,7 +92,7 @@ pub enum mjtEnableBit_ {
     mjNENABLE = 5,
 }
 pub use self::mjtEnableBit_ as mjtEnableBit;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtJoint_ {
     FREE = 0,
@@ -101,7 +101,7 @@ pub enum mjtJoint_ {
     HINGE = 3,
 }
 pub use self::mjtJoint_ as mjtJoint;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtGeom_ {
     PLANE = 0,
@@ -122,7 +122,7 @@ pub enum mjtGeom_ {
     NONE = 1001,
 }
 pub use self::mjtGeom_ as mjtGeom;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtCamLight_ {
     FIXED = 0,
@@ -132,7 +132,7 @@ pub enum mjtCamLight_ {
     TARGETBODYCOM = 4,
 }
 pub use self::mjtCamLight_ as mjtCamLight;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtTexture_ {
     TWO_D = 0,
@@ -140,7 +140,7 @@ pub enum mjtTexture_ {
     SKYBOX = 2,
 }
 pub use self::mjtTexture_ as mjtTexture;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtIntegrator_ {
     EULER = 0,
@@ -148,7 +148,7 @@ pub enum mjtIntegrator_ {
     IMPLICIT = 2,
 }
 pub use self::mjtIntegrator_ as mjtIntegrator;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtCollision_ {
     ALL = 0,
@@ -156,14 +156,14 @@ pub enum mjtCollision_ {
     DYNAMIC = 2,
 }
 pub use self::mjtCollision_ as mjtCollision;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtCone_ {
     PYRAMIDAL = 0,
     ELLIPTIC = 1,
 }
 pub use self::mjtCone_ as mjtCone;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtJacobian_ {
     DENSE = 0,
@@ -171,7 +171,7 @@ pub enum mjtJacobian_ {
     AUTO = 2,
 }
 pub use self::mjtJacobian_ as mjtJacobian;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtSolver_ {
     PGS = 0,
@@ -179,7 +179,7 @@ pub enum mjtSolver_ {
     NEWTON = 2,
 }
 pub use self::mjtSolver_ as mjtSolver;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtEq_ {
     CONNECT = 0,
@@ -189,7 +189,7 @@ pub enum mjtEq_ {
     DISTANCE = 4,
 }
 pub use self::mjtEq_ as mjtEq;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtWrap_ {
     NONE = 0,
@@ -200,7 +200,7 @@ pub enum mjtWrap_ {
     CYLINDER = 5,
 }
 pub use self::mjtWrap_ as mjtWrap;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtTrn_ {
     JOINT = 0,
@@ -212,7 +212,7 @@ pub enum mjtTrn_ {
     UNDEFINED = 1000,
 }
 pub use self::mjtTrn_ as mjtTrn;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtDyn_ {
     NONE = 0,
@@ -222,7 +222,7 @@ pub enum mjtDyn_ {
     USER = 4,
 }
 pub use self::mjtDyn_ as mjtDyn;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtGain_ {
     FIXED = 0,
@@ -231,7 +231,7 @@ pub enum mjtGain_ {
     USER = 3,
 }
 pub use self::mjtGain_ as mjtGain;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtBias_ {
     NONE = 0,
@@ -240,7 +240,7 @@ pub enum mjtBias_ {
     USER = 3,
 }
 pub use self::mjtBias_ as mjtBias;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtObj_ {
     UNKNOWN = 0,
@@ -270,7 +270,7 @@ pub enum mjtObj_ {
     PLUGIN = 24,
 }
 pub use self::mjtObj_ as mjtObj;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtConstraint_ {
     EQUALITY = 0,
@@ -283,7 +283,7 @@ pub enum mjtConstraint_ {
     CONTACT_ELLIPTIC = 7,
 }
 pub use self::mjtConstraint_ as mjtConstraint;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtConstraintState_ {
     SATISFIED = 0,
@@ -293,7 +293,7 @@ pub enum mjtConstraintState_ {
     CONE = 4,
 }
 pub use self::mjtConstraintState_ as mjtConstraintState;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtSensor_ {
     TOUCH = 0,
@@ -336,7 +336,7 @@ pub enum mjtSensor_ {
     USER = 37,
 }
 pub use self::mjtSensor_ as mjtSensor;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtStage_ {
     NONE = 0,
@@ -345,7 +345,7 @@ pub enum mjtStage_ {
     ACC = 3,
 }
 pub use self::mjtStage_ as mjtStage;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtDataType_ {
     REAL = 0,
@@ -354,7 +354,7 @@ pub enum mjtDataType_ {
     QUATERNION = 3,
 }
 pub use self::mjtDataType_ as mjtDataType;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtLRMode_ {
     NONE = 0,
@@ -5862,7 +5862,7 @@ impl Default for mjModel_ {
     }
 }
 pub type mjModel = mjModel_;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtWarning_ {
     INERTIA = 0,
@@ -5876,7 +5876,7 @@ pub enum mjtWarning_ {
     mjNWARNING = 8,
 }
 pub use self::mjtWarning_ as mjtWarning;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtTimer_ {
     STEP = 0,
@@ -7717,7 +7717,7 @@ pub type mjfCollision = ::std::option::Option<
         margin: mjtNum,
     ) -> ::std::os::raw::c_int,
 >;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtCatBit_ {
     STATIC = 1,
@@ -7726,7 +7726,7 @@ pub enum mjtCatBit_ {
     ALL = 7,
 }
 pub use self::mjtCatBit_ as mjtCatBit;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtMouse_ {
     NONE = 0,
@@ -7738,14 +7738,14 @@ pub enum mjtMouse_ {
     SELECT = 6,
 }
 pub use self::mjtMouse_ as mjtMouse;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtPertBit_ {
     TRANSLATE = 1,
     ROTATE = 2,
 }
 pub use self::mjtPertBit_ as mjtPertBit;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtCamera_ {
     FREE = 0,
@@ -7754,7 +7754,7 @@ pub enum mjtCamera_ {
     USER = 3,
 }
 pub use self::mjtCamera_ as mjtCamera;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtLabel_ {
     NONE = 0,
@@ -7774,7 +7774,7 @@ pub enum mjtLabel_ {
     mjNLABEL = 14,
 }
 pub use self::mjtLabel_ as mjtLabel;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtFrame_ {
     NONE = 0,
@@ -7788,7 +7788,7 @@ pub enum mjtFrame_ {
     mjNFRAME = 8,
 }
 pub use self::mjtFrame_ as mjtFrame;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtVisFlag_ {
     CONVEXHULL = 0,
@@ -7817,7 +7817,7 @@ pub enum mjtVisFlag_ {
     mjNVISFLAG = 23,
 }
 pub use self::mjtVisFlag_ as mjtVisFlag;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtRndFlag_ {
     SHADOW = 0,
@@ -7833,7 +7833,7 @@ pub enum mjtRndFlag_ {
     mjNRNDFLAG = 10,
 }
 pub use self::mjtRndFlag_ as mjtRndFlag;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtStereo_ {
     NONE = 0,
@@ -9344,7 +9344,7 @@ impl Default for mjvFigure_ {
     }
 }
 pub type mjvFigure = mjvFigure_;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtPluginTypeBit_ {
     ACTUATOR = 1,
@@ -9595,7 +9595,7 @@ pub type mjfPluginLibraryLoadCallback = ::std::option::Option<
         count: ::std::os::raw::c_int,
     ),
 >;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtGridPos_ {
     TOPLEFT = 0,
@@ -9604,14 +9604,14 @@ pub enum mjtGridPos_ {
     BOTTOMRIGHT = 3,
 }
 pub use self::mjtGridPos_ as mjtGridPos;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtFramebuffer_ {
     WINDOW = 0,
     OFFSCREEN = 1,
 }
 pub use self::mjtFramebuffer_ as mjtFramebuffer;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtFontScale_ {
     SCALE_50 = 50,
@@ -9622,7 +9622,7 @@ pub enum mjtFontScale_ {
     SCALE_300 = 300,
 }
 pub use self::mjtFontScale_ as mjtFontScale;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtFont_ {
     NORMAL = 0,
@@ -10344,7 +10344,7 @@ impl Default for mjrContext_ {
     }
 }
 pub type mjrContext = mjrContext_;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtButton_ {
     NONE = 0,
@@ -10353,7 +10353,7 @@ pub enum mjtButton_ {
     MIDDLE = 3,
 }
 pub use self::mjtButton_ as mjtButton;
-#[repr(u32)]
+#[repr(i32)]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
 pub enum mjtEvent_ {
     NONE = 0,

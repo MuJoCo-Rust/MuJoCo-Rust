@@ -61,10 +61,7 @@ fn main() {
         };
 
         println!("cargo:rustc-link-lib=dylib=mujoco");
-        println!(
-            "cargo:rustc-link-search=dylib={}",
-            mj_lib_posix.to_str().unwrap()
-        );
+        println!("cargo:rustc-link-search={}", mj_lib_posix.to_str().unwrap());
 
         // Copy mujoco.dll to target directory on Windows targets
         if env::var("CARGO_CFG_WINDOWS").is_ok() {
