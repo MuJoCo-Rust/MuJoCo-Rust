@@ -1,7 +1,11 @@
 [package]
 name = "mujoco-rust"
-version = "0.0.3"
-authors = ["Ryan Butler <thebutlah@gmail.com>", "Aaron Law <aaronlaw1215@gmail.com>"]
+version = "0.0.4"
+authors = [
+    "Ryan Butler <thebutlah@gmail.com>",
+    "Aaron Law <aaronlaw1215@gmail.com>",
+    "Sergei Surovtsev <ssurovsev@gmail.com>",
+]
 edition = "2018"
 description = "MuJoCo bindings for Rust"
 readme = "../README.md"
@@ -19,6 +23,9 @@ default = ["mj-render"]
 mj-render = ["mujoco-rs-sys/mj-render"]
 
 [dependencies]
-mujoco-rs-sys = { version = "0.0.3", path = "../mujoco-sys", default-features = false }
+mujoco-rs-sys = { version = "0.0.4", path = "../mujoco-sys", default-features = false }
 dirs = "4.0"
 lazy_static = "1.4.0"
+arrayvec = "0.7.2"
+itertools = "0.10.5"
+nalgebra = "0.31.4"
