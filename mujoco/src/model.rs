@@ -435,7 +435,12 @@ impl Model {
                     geom_group: *mj_model.geom_group.add(i),
                     geom_contype: *mj_model.geom_contype.add(i),
                     pos: Vector3::from(pos_array),
-                    quat: Quaternion::from(quat_array),
+                    quat: Quaternion::new(
+                        quat_array[0],
+                        quat_array[1],
+                        quat_array[2],
+                        quat_array[3],
+                    ),
                     size: Vector3::from(size_array),
                     color: color_array,
                     mesh,

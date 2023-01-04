@@ -84,7 +84,7 @@ impl Simulation {
 
         for i in 0..self.model.ngeom() {
             let entry = Quaternion::<f64>::new(
-                raw_quat[i * 4 + 0],
+                raw_quat[i * 4],
                 raw_quat[i * 4 + 1],
                 raw_quat[i * 4 + 2],
                 raw_quat[i * 4 + 3],
