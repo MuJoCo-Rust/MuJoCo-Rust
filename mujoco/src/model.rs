@@ -504,7 +504,12 @@ impl Model {
                     geom_n: *mj_model.body_geomnum.add(i),
                     geom_addr: *mj_model.body_geomadr.add(i),
                     pos: Vector3::from(pos_array),
-                    quat: Quaternion::from(quat_array),
+                    quat: Quaternion::new(
+                        quat_array[0],
+                        quat_array[1],
+                        quat_array[2],
+                        quat_array[3],
+                    ),
                     name: String::from(name),
                 }
             };
