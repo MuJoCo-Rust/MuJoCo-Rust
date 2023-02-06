@@ -53,7 +53,7 @@ fn main() {
         let mj_root = PathBuf::from_str(&mj_root).expect("Unable to get path");
 
         let mj_lib_windows = mj_root.join("bin");
-        let mj_lib_posix = mj_root.join("lib");
+        let mj_lib_posix = mj_root.join("bin");
 
         let path = match env::var("CARGO_CFG_WINDOWS") {
             Ok(_) => mj_lib_windows.join(&lib_file),
@@ -62,6 +62,8 @@ fn main() {
 
         println!("cargo:rustc-link-lib=dylib=mujoco");
         println!("cargo:rustc-link-search={}", mj_lib_posix.to_str().unwrap());
+        println!("cargo:rustc-link-lib=GL");
+        println!("cargo:rustc-link-lib=GLEW");
 
         // Copy mujoco.dll to target directory on Windows targets
         if env::var("CARGO_CFG_WINDOWS").is_ok() {

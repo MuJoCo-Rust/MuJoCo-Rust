@@ -17,7 +17,7 @@ impl std::fmt::Display for AddError {
 impl std::error::Error for AddError {}
 
 pub struct Vfs {
-    pub(crate) vfs: Box<mujoco_rs_sys::no_render::mjVFS_>,
+    pub(crate) vfs: Box<mujoco_rs_sys::no_render::mjVFS>,
 }
 impl Vfs {
     /// Initializes a new empty `Vfs`
@@ -96,7 +96,7 @@ impl Default for Vfs {
         let mut result = Self {
             vfs: unsafe {
                 Box::from_raw(std::alloc::alloc(std::alloc::Layout::new::<
-                    mujoco_rs_sys::no_render::mjVFS_,
+                    mujoco_rs_sys::no_render::mjVFS,
                 >()) as *mut _)
             }, // Default::default(),
         };

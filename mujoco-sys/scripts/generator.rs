@@ -51,20 +51,18 @@ impl ParseCallbacks for EnumPrefixStripper {
 }
 
 fn generate() {
-    let mj_path = match env::var("CARGO_CFG_WINDOWS") {
-        Ok(_) => {
-            if env::var("MUJOCO_DIR").is_ok() {
-                PathBuf::from(env::var("MUJOCO_DIR").unwrap().as_str())
-            } else if env::var("MUJOCO_PREFIX").is_ok() {
-                PathBuf::from(env::var("MUJOCO_PREFIX").unwrap().as_str())
-            } else {
-                PathBuf::from("C:\\Program Files\\MuJoCo")
-            }
+    let mj_path = if env::var("MUJOCO_DIR").is_ok() {
+        PathBuf::from(env::var("MUJOCO_DIR").unwrap().as_str())
+    } else if env::var("MUJOCO_PREFIX").is_ok() {
+        PathBuf::from(env::var("MUJOCO_PREFIX").unwrap().as_str())
+    } else {
+        match env::var("CARGO_CFG_WINDOWS") {
+            Ok(_) => PathBuf::from("C:\\Program Files\\MuJoCo"),
+            _ => dirs::home_dir()
+                .expect("Could not locate home directory!")
+                .join(".local")
+                .join("mujoco"),
         }
-        _ => dirs::home_dir()
-            .expect("Could not locate home directory!")
-            .join(".local")
-            .join("mujoco"),
     };
 
     let mj_include = mj_path.join("include");
@@ -72,7 +70,7 @@ fn generate() {
     println!("mj_path: {:?}", mj_path);
 
     let builder_helper = |b: bindgen::Builder, whitelist: &str| -> bindgen::Builder {
-        b.header_contents("wrapper.h", r#"#include "mujoco/mujoco.h""#)
+        b.header_contents("wrapper.h", r#"#include "mujoco.h""#)
             .parse_callbacks(Box::new(bindgen::CargoCallbacks))
             .allowlist_type(whitelist)
             .allowlist_function(whitelist)
