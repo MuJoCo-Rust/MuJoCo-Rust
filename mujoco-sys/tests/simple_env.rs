@@ -90,7 +90,6 @@ fn load_model() -> *mut mjModel {
     model
 }
 
-#
 #[test]
 fn test_load_model() {
     let model = load_model();
