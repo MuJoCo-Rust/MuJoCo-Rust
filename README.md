@@ -4,7 +4,7 @@ MuJoCo bindings for Rust
 
 ## Installation requirements
 
-These bindings require that MuJoCo be installed before building. The build system assumes that MuJoCo is installed into `~/.local` on UNIX-based systems and `C:\Program Files\MuJoCo` on Windows, but any installation directory can be used, as long as either the environment variable MUJOCO_DIR or MUJOCO_PREFIX is set to the root of the installation.
+These bindings require that MuJoCo be installed before building. The build system assumes that MuJoCo is installed into `~/.local/mujoco` on UNIX-based systems and `C:\Program Files\MuJoCo` on Windows, but any installation directory can be used, as long as either the environment variable MUJOCO_DIR or MUJOCO_PREFIX is set to the root of the installation.
 
 ## Usage
 

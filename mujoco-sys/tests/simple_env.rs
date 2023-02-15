@@ -39,10 +39,6 @@ lazy_static! {
         CStr::from_bytes_with_nul(b"simple.xml\0").unwrap();
 }
 
-fn activate() {
-    assert_eq!(unsafe { mj_activate(MJ_KEY.as_ptr()) }, 1);
-}
-
 fn load_model() -> *mut mjModel {
     // use std::mem::MaybeUninit;
     let mut vfs: Box<mjVFS> = {
@@ -95,22 +91,13 @@ fn load_model() -> *mut mjModel {
 }
 
 #[test]
-fn test_activate() {
-    activate();
-    // deactivate();
-}
-
-#[test]
 fn test_load_model() {
-    activate();
     let model = load_model();
     unsafe { mj_deleteModel(model) };
-    // deactivate();
 }
 
 #[test]
 fn test_make_data() {
-    activate();
     let model = load_model();
 
     let data = unsafe { mj_makeData(model) };
@@ -119,12 +106,10 @@ fn test_make_data() {
         mj_deleteData(data);
         mj_deleteModel(model);
     }
-    // deactivate();
 }
 
 #[test]
 fn test_simulate() {
-    activate();
     let model = load_model();
     let data = unsafe { mj_makeData(model) };
     assert_ne!(data, std::ptr::null_mut());
@@ -137,5 +122,4 @@ fn test_simulate() {
         mj_deleteData(data);
         mj_deleteModel(model);
     }
-    // deactivate();
 }
