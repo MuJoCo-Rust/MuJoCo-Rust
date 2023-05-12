@@ -1,6 +1,6 @@
 [package]
 name = "mujoco-rust"
-version = "0.0.5"
+version = "0.0.6"
 authors = [
     "Ryan Butler <thebutlah@gmail.com>",
     "Aaron Law <aaronlaw1215@gmail.com>",
@@ -24,8 +24,8 @@ mj-render = ["mujoco-rs-sys/mj-render"]
 
 [dependencies]
 mujoco-rs-sys = { version = "0.0.4", path = "../mujoco-sys", default-features = false }
-dirs = "4.0"
+dirs = "~5.0.0"
 lazy_static = "1.4.0"
 arrayvec = "0.7.2"
 itertools = "0.10.5"
-nalgebra = "0.31.4"
+nalgebra = "0.32.0"
