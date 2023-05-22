@@ -16,7 +16,7 @@ These wrappers use `mujoco-rs-sys` to provide rust bindings to the MuJoCo C API.
 
 ```toml
 [dependencies]
-mujoco-rust = { version = "0.0.4" }
+mujoco-rust = { version = "0.0.6" }
 ```
 
 **main.rs**
