@@ -42,7 +42,7 @@ fn main() {
         },
     };
 
-    let lib_file = format!("{}mujoco.{}", prefix, dyl_ext);
+    let lib_file = format!("{prefix}mujoco.{dyl_ext}");
 
     // Avoid linking to mujoco in docs.rs as it won't exist in that environment
     if option_env!("DOCS_RS").is_none() {

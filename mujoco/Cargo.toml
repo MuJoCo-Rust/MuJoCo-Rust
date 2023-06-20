@@ -1,6 +1,6 @@
 [package]
 name = "mujoco-rust"
-version = "0.0.6"
+version = "0.0.7"
 authors = [
     "Ryan Butler <thebutlah@gmail.com>",
     "Aaron Law <aaronlaw1215@gmail.com>",

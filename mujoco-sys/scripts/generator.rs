@@ -32,7 +32,7 @@ impl ParseCallbacks for EnumPrefixStripper {
                 _ => None,
             };
             if let Some(s) = edge_case {
-                println!("Found edge case! {}::{} => {0}::{}", enum_name, original, s);
+                println!("Found edge case! {enum_name}::{original} => {enum_name}::{s}");
                 return Some(s.to_owned());
             }
         }
@@ -45,7 +45,7 @@ impl ParseCallbacks for EnumPrefixStripper {
                 enum_name, original
             );
         }
-        println!("{}::{} => {0}::{}", enum_name, original, suffix);
+        println!("{enum_name}::{original} => {enum_name}::{suffix}");
         Some(suffix.to_owned())
     }
 }
@@ -69,7 +69,7 @@ fn generate() {
 
     let mj_include = mj_path.join("include");
 
-    println!("mj_path: {:?}", mj_path);
+    println!("mj_path: {mj_path:?}");
 
     let builder_helper = |b: bindgen::Builder, whitelist: &str| -> bindgen::Builder {
         b.header_contents("wrapper.h", r#"#include "mujoco/mujoco.h""#)
