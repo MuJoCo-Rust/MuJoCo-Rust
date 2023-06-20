@@ -30,7 +30,7 @@ impl Body {
     pub fn render_geom(&self, geoms: &[Geom]) -> Option<Geom> {
         let geom_query = geoms.iter().filter(|g| g.body_id == self.id);
         if geom_query.clone().count() == 1 {
-            return Some(geom_query.clone().last().unwrap().clone());
+            return Some(geom_query.last().unwrap().clone());
         }
 
         let geoms = self.geoms(geoms);

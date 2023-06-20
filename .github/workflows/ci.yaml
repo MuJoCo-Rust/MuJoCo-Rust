@@ -36,7 +36,7 @@ jobs:
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install pkg-config libx11-dev libasound2-dev libudev-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
       - name: Install Mujoco
-        run: wget https://github.com/deepmind/mujoco/releases/download/2.3.5/mujoco-2.3.5-linux-x86_64.tar.gz; tar -xf mujoco-2.3.5-linux-x86_64.tar.gz -C ~/.local; mv ~/.local/mujoco-2.3.5/ ~/.local/mujoco; sudo cp ~/.local/mujoco/lib/libmujoco.so /usr/lib/libmujoco.so; sudo cp ~/.local/mujoco/lib/libmujoco.so.2.3.5 /usr/lib/libmujoco.so.2.3.5
+        run: wget https://github.com/deepmind/mujoco/releases/download/2.3.6/mujoco-2.3.6-linux-x86_64.tar.gz; tar -xf mujoco-2.3.6-linux-x86_64.tar.gz -C ~/.local; mv ~/.local/mujoco-2.3.6/ ~/.local/mujoco; sudo cp ~/.local/mujoco/lib/libmujoco.so /usr/lib/libmujoco.so; sudo cp ~/.local/mujoco/lib/libmujoco.so.2.3.6 /usr/lib/libmujoco.so.2.3.6
       - name: Run cargo test
         uses: actions-rs/cargo@v1
         with:
@@ -63,7 +63,7 @@ jobs:
       - name: Install mujoco
         run: |
           $ProgressPreference = "SilentlyContinue"
-          Invoke-WebRequest https://github.com/deepmind/mujoco/releases/download/2.3.5/mujoco-2.3.5-windows-x86_64.zip -OutFile mujoco.zip
+          Invoke-WebRequest https://github.com/deepmind/mujoco/releases/download/2.3.6/mujoco-2.3.6-windows-x86_64.zip -OutFile mujoco.zip
           7z x -y mujoco.zip -o"C:\Program Files\MuJoCo" | Out-Null
           del mujoco.zip
       - name: Build and Test
@@ -97,7 +97,7 @@ jobs:
       - name: Install Dependencies
         run: sudo apt-get update; sudo apt-get install pkg-config libx11-dev libasound2-dev libudev-dev
       - name: Install Mujoco
-        run: wget https://github.com/deepmind/mujoco/releases/download/2.3.5/mujoco-2.3.5-linux-x86_64.tar.gz; tar -xf mujoco-2.3.5-linux-x86_64.tar.gz -C ~/.local; mv ~/.local/mujoco-2.3.5/ ~/.local/mujoco; sudo cp ~/.local/mujoco/lib/libmujoco.so /usr/lib/libmujoco.so; sudo cp ~/.local/mujoco/lib/libmujoco.so.2.3.5 /usr/lib/libmujoco.so.2.3.5
+        run: wget https://github.com/deepmind/mujoco/releases/download/2.3.6/mujoco-2.3.6-linux-x86_64.tar.gz; tar -xf mujoco-2.3.6-linux-x86_64.tar.gz -C ~/.local; mv ~/.local/mujoco-2.3.6/ ~/.local/mujoco; sudo cp ~/.local/mujoco/lib/libmujoco.so /usr/lib/libmujoco.so; sudo cp ~/.local/mujoco/lib/libmujoco.so.2.3.6 /usr/lib/libmujoco.so.2.3.6
       - name: Run clippy
         uses: actions-rs/clippy-check@v1
         with:
